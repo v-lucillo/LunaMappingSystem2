@@ -18,13 +18,13 @@
        <!-- slide img starts -->
 
       <div class="slide first">
-          <img id="img1" src="{{asset('lunamapping_template/img/img_1.jpg')}}" alt="">
+          <img id="img1" src="{{$images[0]->image_location}}" alt="">
       </div>
       <div class="slide">
-          <img id="img2" src="{{asset('lunamapping_template/img/img_2.jpg')}}" alt="">
+          <img id="img2" src="{{$images[1]->image_location}}" alt="">
       </div>
       <div class="slide">
-          <img id="img3" src="{{asset('lunamapping_template/img/img_3.jpg')}}" alt="">
+          <img id="img3" src="{{$images[2]->image_location}}" alt="">
       </div>
       <!-- slide img ends -->
        <!--  -->
@@ -49,16 +49,16 @@
 <div class="person">
   <div class="mayor">
       <div class="pctr">
-          <img id="mayor_pctr" src="{{asset('lunamapping_template/img/mayor.png')}}">
+          <img id="mayor_pctr" src="{{$person_incharge[0]->image_location}}">
           <h1>Mayor</h1>
-          <h2 id="mayor_name">Adut K. Rina</h2>
+          <h2 id="mayor_name">{{$person_incharge[0]->name}}</h2>
       </div>
   </div>
   <div class="v_mayor">
       <div class="pctr">
-          <img id="vmayor_pctr" src=" {{asset('lunamapping_template/img/v_mayor.png')}}">
+          <img id="vmayor_pctr" src="{{$person_incharge[1]->image_location}}">
           <h1>Vice Mayor</h1>
-          <h2 id="vmayor_name">Mangun G. Ngurkut</h2>
+          <h2 id="vmayor_name">{{$person_incharge[1]->name}}</h2>
       </div>
      
   </div>

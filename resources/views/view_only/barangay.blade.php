@@ -2,98 +2,103 @@
 
 @section('css')
 
-  </style>
 @endsection
 
 
 @section('container')
-<div class="dropdown">
-  <div class="select">
-      <span class="selected">Barangays</span>
-      <div class="caret"></div>
+
+<div class="row">
+  <div class="col-sm-12 col-lg-2">
+    <div class="dropdown">
+      <div class="select">
+          <span class="selected">Barangays</span>
+          <div class="caret"></div>
+      </div>
+      <ul class="menu">
+          <li id="option_brngy">
+            <p id="bustamante">Bustamante</p>
+          </li>
+          
+          <li id="option_brngy">
+             <p id="centro_1">Centro 1</p>
+          </li>
+          
+          <li id="option_brngy">
+              <p id="centro_2">Centro 2</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="centro_3">Centro 3</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="concepcion">Concepcion</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="dadap">Dadap</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="harana">Harana</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="lalog_1">Lalog 1</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="lalog_2">Lalog 2</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="luyao">Luyao</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="macanao">Macañao</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="macugay">Macugay</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="mambabanga">Mambabanga</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="pulay">Pulay</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="puroc">Puroc</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="san_isidro">San Isidro</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="san_miguel">San Miguel</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="santo_domingo">Santo Domingo</p>
+          </li>
+
+          <li id="option_brngy">
+              <p id="union_kalinga">Union Kalinga</p>
+          </li>
+      </ul>
+    </div>
   </div>
-  <ul class="menu">
-      <li id="option_brngy">
-        <p id="bustamante">Bustamante</p>
-      </li>
-      
-      <li id="option_brngy">
-         <p id="centro_1">Centro 1</p>
-      </li>
-      
-      <li id="option_brngy">
-          <p id="centro_2">Centro 2</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="centro_3">Centro 3</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="concepcion">Concepcion</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="dadap">Dadap</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="harana">Harana</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="lalog_1">Lalog 1</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="lalog_2">Lalog 2</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="luyao">Luyao</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="macanao">Macañao</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="macugay">Macugay</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="mambabanga">Mambabanga</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="pulay">Pulay</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="puroc">Puroc</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="san_isidro">San Isidro</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="san_miguel">San Miguel</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="santo_domingo">Santo Domingo</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="union_kalinga">Union Kalinga</p>
-      </li>
-  </ul>
+  <div class="col-sm-12 col-lg-10">
+    <div id="map" class="map"></div>
+  </div>
 </div>
 
 
-<h1 class="mapa">Map</h1>
-<div id="map" class="map"></div>
 
 <pre id="coordinates" class="coordinates"></pre>
 
