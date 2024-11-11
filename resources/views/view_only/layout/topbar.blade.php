@@ -14,8 +14,5 @@
 
         </ul>
     </nav>
-    <a class="login" href="login.html"><button>login</button></a>   
+    <a class="login" href="/administrator"><button>login</button></a>   
 </header>
-
-
- Route/PublicController -> return view

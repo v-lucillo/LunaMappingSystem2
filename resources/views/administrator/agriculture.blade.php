@@ -15,7 +15,7 @@
           </div>
 
           <div class="card-body">
-            <form name = "barrangay_form">
+            <form name = "agri_form">
               
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-3 col-form-label">Baranngay</label>
@@ -55,7 +55,7 @@
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-3 col-form-label">Produced</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" name ="produced" placeholder="(e.g 200)">
+                  <input type="number" class="form-control" name ="produced" placeholder="(e.g 200)">
                 </div>
               </div>
 
@@ -100,7 +100,7 @@
 
             <div class="row mb-3">
               <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary" name = "create_baranggay_record">Submit Form</button>
+                <button type="submit" class="btn btn-primary" name = "create_agri_record">Submit Form</button>
               </div>
             </div>
 
@@ -111,14 +111,17 @@
 
     <div class="col-lg-7 col-sm-12">
       <div class="card-datatable table-responsive">
-        <table class="table" name = "baranggay_record_table">
+        <table class="table" name = "agri_record_table">
             <thead>
             <tr>
                 <th>Baranggay</th>
                 <th>Business Type</th>
                 <th>Address</th>
+                <th>Produced</th>
+                <th>Measurement</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Remarks</th>
-                <th>Coordinates</th>
             </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -126,11 +129,100 @@
         </table>
       </div>
     </div>
-    
+
   </div>
 @endsection
 
 
 @section('js')
-    
+    <!-- create_agri_record -->
+<script type="text/javascript">
+  const agri_form =  $('form[name="agri_form"]');
+  const remove_edit_button = $('i[name="remove_edit_button"]');
+  const card_title =  $('h5[name="card_title"]');
+
+  const agri_record_table =  $('table[name="agri_record_table"]').DataTable({
+      ajax: `/administrator/get_agri_record`,
+      columns: [
+          {data: 'baranggay_name'},
+          {data: 'business_type_name'},
+          {data: 'address'},
+          {data: 'produced'},
+          {data: function(d){
+            if(d.measurement ==  "1"){
+              return "Kilogram";
+            }else if(d.measurement ==  "2"){
+              return "Metric Ton";
+            }
+            else if(d.measurement ==  "3"){
+              return "Peice";
+            }
+          }},
+          {data: 'start_date'},
+          {data: 'end_date'},
+          {data: 'remarks'},
+      ],
+  });
+
+
+  $('button[name="create_agri_record"]').on('click', function(){
+    $.ajax({
+      url: `/administrator/create_agri_record`,
+      data: agri_form.serializeArray(),
+      success: function(e){
+        Toastify({
+                  text: "Success",
+                  duration: 3000,
+                  newWindow: true,
+                  close: true,
+                  gravity: "top", // `top` or `bottom`
+                  position: "center", // `left`, `center` or `right`
+                  stopOnFocus: true, // Prevents dismissing of toast on hover
+                  className: "info",
+                  onClick: function(){} // Callback after click
+                }).showToast();
+        agri_form.trigger('reset');
+        agri_record_table.ajax.reload(null, false);
+        remove_edit_button.hide();
+        card_title.text("Add Record");
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  });
+
+
+  remove_edit_button.on('click', function(){
+    $(this).hide();
+    card_title.text("Add Record");
+    agri_form.trigger('reset');
+  });
+
+  $(document).on('click', 'table[name="agri_record_table"] tbody tr', function(){
+    let data = agri_record_table.row(this).data();
+    remove_edit_button.show();
+    card_title.text("Modify Record");
+
+    for(let key in data){
+      agri_form.find(`input[name="${key}"]`).val(data[key]);
+    }
+
+
+    $('input[name="id"]').val(data.id);
+    $('select[name="business_type"]').val(data.business_type).change();
+    $('select[name="measurement"]').val(data.measurement).change();
+    $('select[name="baranngay"]').val(data.baranngay).change();
+    $('textarea[name="remarks"]').val(data.remarks);
+
+
+    // let lat  =  data.coordinates.split("Lat: ")[1];
+    // let long =  data.coordinates.split("Long: ")[1].split(" -")[0];
+    // marker.setLngLat([long, lat]);
+
+  });
+
+
+
+</script>
 @endsection

@@ -179,6 +179,8 @@
                 }).showToast();
         barrangay_form.trigger('reset');
         baranggay_record_table.ajax.reload(null, false);
+        remove_edit_button.hide();
+        card_title.text("Add Record");
       },
       error: function(e){
         console.log(e);

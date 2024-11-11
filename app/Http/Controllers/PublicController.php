@@ -16,13 +16,13 @@ class PublicController extends Controller
     }
 
     public function barangay(){
-        return view("view_only.barangay");
+        return view("view_only.barangay",[
+            "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
+            "business_list" => DB::select("SELECT * FROM business_table")
+        ]);
     }
 
 
-    // public function councilor(){
-    //     return view("view_only.councilor");
-    // }
 
     public function agriculture(){
         return view("view_only.agriculture");

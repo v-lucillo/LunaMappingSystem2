@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 use App\Models\BaranggayRecordModel;
+use App\Models\AgricultureModel;
+
 
 class AdministratorController extends Controller
 {
@@ -50,7 +52,6 @@ class AdministratorController extends Controller
     }
 
     public function barangay(){
-
         return view("administrator.barangay", [
             "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
             "business_list" => DB::select("SELECT * FROM business_table")
@@ -119,14 +120,72 @@ class AdministratorController extends Controller
         }
         unset($data['id']);
         BaranggayRecordModel::updateOrCreate(["id" => $id], $data);
-
-        // JobOptionTable::updateOrCreate(["id" => $job_option_id],  (array) $row);
-        // DB::table('baranggay_record_table')->insert($data);
     }
+
+
+    public function create_agri_record(Request $request){
+        $data = $request->all();
+        $id =  null;
+        if(isset($data['id'])){
+            $id =  $data['id'];
+        }
+        unset($data['id']);
+        AgricultureModel::updateOrCreate(["id" => $id], $data);
+    }
+
+
 
     public function get_baranggay_record(){
         return DataTables::of(
             DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC")
         )->make(true);
+    }
+
+
+    public function get_agri_record(){
+        return DataTables::of(
+            DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM agriculture_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC")
+        )->make(true);
+    }
+
+
+
+    public function get_baranggay_record_for_map(Request $request){
+        $id =  $request->id;
+        if($id){
+            $data = DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay WHERE a.baranngay = $id ORDER BY a.id DESC");
+        }else{
+            $data = DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC");
+        }
+
+        return $data;
+    }
+
+    public function get_barangay_chart(Request $request){
+        $id =  $request->id;
+        if($id){
+            $data = DB::select("SELECT b.name, COUNT(*) AS quantity
+                    FROM baranggay_record_table a
+                    LEFT JOIN business_table b ON a.business_type = b.id
+                    WHERE a.baranngay = $id
+                    GROUP BY a.business_type");
+        }else{
+            $data = DB::select("SELECT b.name, COUNT(*) AS quantity
+                    FROM baranggay_record_table a
+                    LEFT JOIN business_table b ON a.business_type = b.id
+                    GROUP BY a.business_type");
+        }
+        $label = [];
+        $set = [];
+
+        foreach ($data as $row) {
+            array_push($label, $row->name);
+            array_push($set, $row->quantity);
+        }
+
+        return [
+            "label" => $label,
+            "set" => $set
+        ];
     }
 }

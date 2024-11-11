@@ -4,103 +4,31 @@
 
 @endsection
 
-
 @section('container')
 
-<div class="row">
-  <div class="col-sm-12 col-lg-2">
-    <div class="dropdown">
+<div style="">
+<div class="dropdown">
       <div class="select">
           <span class="selected">Barangays</span>
           <div class="caret"></div>
       </div>
       <ul class="menu">
-          <li id="option_brngy">
-            <p id="bustamante">Bustamante</p>
+         <li id="option_brngy" __id = "">
+            <p >All</p>
           </li>
-          
-          <li id="option_brngy">
-             <p id="centro_1">Centro 1</p>
+         @foreach($barangay_list as $row)
+          <li id="option_brngy" __id = "{{$row->id}}">
+              <p>{{$row->name}}</p>
           </li>
-          
-          <li id="option_brngy">
-              <p id="centro_2">Centro 2</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="centro_3">Centro 3</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="concepcion">Concepcion</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="dadap">Dadap</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="harana">Harana</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="lalog_1">Lalog 1</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="lalog_2">Lalog 2</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="luyao">Luyao</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="macanao">Macañao</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="macugay">Macugay</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="mambabanga">Mambabanga</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="pulay">Pulay</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="puroc">Puroc</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="san_isidro">San Isidro</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="san_miguel">San Miguel</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="santo_domingo">Santo Domingo</p>
-          </li>
-
-          <li id="option_brngy">
-              <p id="union_kalinga">Union Kalinga</p>
-          </li>
+         @endforeach
       </ul>
     </div>
-  </div>
-  <div class="col-sm-12 col-lg-10">
-    <div id="map" class="map"></div>
-  </div>
-</div>
 
-
-
+    <div>
+        <div id="map" class="map"></div>
 <pre id="coordinates" class="coordinates"></pre>
+    </div>
+
 
 
 
@@ -111,6 +39,8 @@
   </div>
 
   
+</div>
+
 </div>
 
 
@@ -143,21 +73,16 @@
         zoom: 12
     });
 
-    const marker = new mapboxgl.Marker({
-        draggable: true
-    })
-        .setLngLat([121.72827890300437, 16.973888694502364])
-        .addTo(map);
-
+   
         // const el = document.createElement('div');
         // el.className = 'marker';
         // const marker = new mapboxgl.Marker(el).setLngLat([121.71871068604531, 16.939325096589386]).addTo(map);
 
-    function onDragEnd() {
-        const lngLat = marker.getLngLat();
-        coordinates.style.display = 'block';
-        // coordinates.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
-    }
+    // function onDragEnd() {
+    //     const lngLat = marker.getLngLat();
+    //     coordinates.style.display = 'block';
+    //     // coordinates.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
+    // }
     map.on('load', () => {
 // Add a data source containing GeoJSON data.
 map.addSource('maine', {
@@ -265,7 +190,123 @@ map.addLayer({
 });
 
 
-    marker.on('dragend', onDragEnd);
+// marker.on('dragend', onDragEnd);
+
+let currentMarkers =  [];
+
+function render_marker(id = null){
+  $.ajax({
+    url: `/administrator/get_baranggay_record_for_map`,
+    data: {
+      id: id
+    },
+    success: function(e){
+      for(let id in currentMarkers){
+        currentMarkers[id].remove();
+      }
+      e.forEach((data) => {
+        console.log(data);
+        let lat  =  data.coordinates.split("Lat: ")[1];
+        let long =  data.coordinates.split("Long: ")[1].split(" -")[0];
+
+        let popup = new mapboxgl.Popup()
+          .setText(data.business_type_name)
+          .addTo(map);
+
+          let marker = new mapboxgl.Marker()
+          .setLngLat([long, lat])
+          .addTo(map)
+          .setPopup(popup);
+
+          currentMarkers.push(marker);
+
+      });
+    }
+  });
+  
+    // add.locations.forEach((location) => {
+    //   console.log(location.long + " " + location.lat);
+
+    //   var marker = new mapboxgl.Marker(el)
+    //       .setLngLat([location.long, location.lat])
+    //       .setPopup(popup)
+    //       .addTo(this.map);
+
+    //   this.markers.push(marker);
+    // });
+
+}
+
+render_marker();
+const ctx = document.getElementById('myChart');
+  
+function render_chart(id = null){
+  $.ajax({
+    url: `/administrator/get_barangay_chart`,
+    data: {
+      id: id
+    },
+    success: function(e){
+      removeData(new_chart);
+      addData(new_chart, e.label, e.set);
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+
+
+// setInterval(function(){
+//     removeData(new_chart);
+
+//     addData(new_chart, ['karinderia', 'barbero', 'pancitan', 'sarisari-store', 'talipapa', 'marts'], [12, 19, 33, 21, 22, 34]);
+// }, 5000);
+
+// ['karinderia', 'barbero', 'pancitan', 'sarisari-store', 'talipapa', 'marts'],
+// [12, 19, 3, 5, 2, 3]
+
+let new_chart =  new Chart(ctx, {
+  type: 'bar',
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+  
+
+function addData(chart, label, newData) {
+  chart.data = {
+    labels: label,
+    datasets: [{
+      label: '# business',
+      data: newData,
+      borderWidth: 1
+    }]
+  };
+  chart.update();
+}
+
+function removeData(chart) {
+    chart.data.labels = [];
+    chart.data.datasets = [];
+    chart.update();
+}
+
+render_chart();
+
+
+$('li#option_brngy').on('click', function(){
+  let id = $(this).attr('__id');
+  render_marker(id);
+  render_chart(id);
+  // agri_record_table.search($(this).text().trim()).draw();
+});
+
+
 </script>
 
 

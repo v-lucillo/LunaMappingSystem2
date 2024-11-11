@@ -124,12 +124,12 @@
   }
  
   </style>
+ 
 @endsection
 
 
 @section('container')
-<form action="">
-  <div class="dropdown_agri">
+<div class="dropdown_agri">
       <div class="select_agri">
           <span class="selected_agri">Barangays</span>
           <div class="caret_agri"></div>
@@ -212,34 +212,74 @@
           </li>
       </ul>
   </div>
-</form>
 
 
-
-<div class="piebox">
-  <h1>Pie Chart</h1>
-  <div class="box">
-      <canvas id="pie"></canvas>
+  <br>
+  
+  <div style="background: #fff;
+    margin: 24px;
+    padding: 30px;
+    border-radius: 10px;">
+    <table class="table" name = "agri_record_table">
+            <thead>
+            <tr>
+                <th>Baranggay</th>
+                <th>Business Type</th>
+                <th>Address</th>
+                <th>Produced</th>
+                <th>Measurement</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Remarks</th>
+            </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+            </tbody>
+        </table>
   </div>
-
-  
-</div>
-<div class="apit">
-  
-</div>
-
 
 @endsection
 
 
 @section('js')
-    
+
+<script type="text/javascript" src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 <script src="{{asset('lunamapping_template/pie.js')}}"></script>
-<script type="text/javascript">
-  
-</script>
 
+<script type="text/javascript">
+  const agri_record_table =  $('table[name="agri_record_table"]').DataTable({
+      ajax: `/administrator/get_agri_record`,
+      columns: [
+          {data: 'baranggay_name'},
+          {data: 'business_type_name'},
+          {data: 'address'},
+          {data: 'produced'},
+          {data: function(d){
+            if(d.measurement ==  "1"){
+              return "Kilogram";
+            }else if(d.measurement ==  "2"){
+              return "Metric Ton";
+            }
+            else if(d.measurement ==  "3"){
+              return "Peice";
+            }
+          }},
+          {data: 'start_date'},
+          {data: 'end_date'},
+          {data: 'remarks'},
+      ],
+  });
+
+
+  $('li#option_brngy').on('click', function(){
+    agri_record_table.search($(this).text().trim()).draw();
+  });
+  // setInterval(function(){
+  // // $(document).find('.dt-search input').val("Dada"); 
+  // agri_record_table.search("Dada").draw();   
+  // }, 4000)
+</script>
 
 
 

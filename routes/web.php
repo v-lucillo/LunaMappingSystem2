@@ -42,11 +42,14 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
     Route::post('update_person_incharge','AdministratorController@update_person_incharge')->name('update_person_incharge');
 
     Route::get('create_baranggay_record','AdministratorController@create_baranggay_record')->name('create_baranggay_record');
-
+    Route::get('create_agri_record','AdministratorController@create_agri_record')->name('create_agri_record');
 
 
     Route::get('get_baranggay_record','AdministratorController@get_baranggay_record')->name('get_baranggay_record');
+    Route::get('get_agri_record','AdministratorController@get_agri_record')->name('get_agri_record');
+    Route::get('get_barangay_chart','AdministratorController@get_barangay_chart')->name('get_barangay_chart');
 
+    Route::get('get_baranggay_record_for_map','AdministratorController@get_baranggay_record_for_map')->name('get_baranggay_record_for_map');
 
 });
 
