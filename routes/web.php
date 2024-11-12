@@ -18,6 +18,7 @@ Route::get('/', function () {
 
 
 // Route::prefix("view")->name("view.")->group(function(){ // view only
+    Route::get('/','PublicController@home');
     Route::get('home','PublicController@home')->name('home');
     Route::get('barangay','PublicController@barangay')->name('barangay');
     Route::get('agriculture','PublicController@agriculture')->name('agriculture');
