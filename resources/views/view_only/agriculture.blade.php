@@ -224,7 +224,7 @@
             <thead>
             <tr>
                 <th>Baranggay</th>
-                <th>Business Type</th>
+                <th>Crop Type</th>
                 <th>Address</th>
                 <th>Produced</th>
                 <th>Measurement</th>
@@ -252,7 +252,7 @@
       ajax: `/administrator/get_agri_record`,
       columns: [
           {data: 'baranggay_name'},
-          {data: 'business_type_name'},
+          {data: 'agri_type_name'},
           {data: 'address'},
           {data: 'produced'},
           {data: function(d){

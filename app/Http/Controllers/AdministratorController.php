@@ -62,7 +62,7 @@ class AdministratorController extends Controller
     public function agriculture(){
         return view("administrator.agriculture", [
             "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
-            "business_list" => DB::select("SELECT * FROM business_table")
+            "crop_type_list" => DB::select("SELECT * FROM agri_type_table")
         ]);
     }
 
@@ -144,7 +144,11 @@ class AdministratorController extends Controller
 
     public function get_agri_record(){
         return DataTables::of(
-            DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM agriculture_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC")
+            DB::select("SELECT a.*, b.name as agri_type_name, c.name as baranggay_name  
+                        FROM agriculture_table a 
+                        LEFT JOIN agri_type_table b on b.id = a.agri_type 
+                        LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                        ORDER BY a.id DESC")
         )->make(true);
     }
 

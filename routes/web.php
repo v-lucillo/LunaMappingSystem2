@@ -6,17 +6,6 @@ use App\Http\Controllers\Offense_recordController;
 use App\Http\Controllers\UserController;
 
 
-Route::get('/', function () {
-    dd("I am here");
-});
-
-// Route::get('/admin', function(){
-//     return view();
-// })->middleware(['auth', 'role:admin'])->name('admin.index');
-
-
-
-
 // Route::prefix("view")->name("view.")->group(function(){ // view only
     Route::get('/','PublicController@home');
     Route::get('home','PublicController@home')->name('home');

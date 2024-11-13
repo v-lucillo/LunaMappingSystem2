@@ -40,11 +40,11 @@
 
 
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">Business Type</label>
+                <label for="inputText" class="col-sm-3 col-form-label">Crop Type</label>
                 <div class="col-sm-9">
-                  <select class="form-select" name = "business_type">
+                  <select class="form-select" name = "agri_type">
                     <option selected="">Open this select menu</option>
-                    @foreach($business_list as $list)
+                    @foreach($crop_type_list as $list)
                       <option value="{{$list->id}}">{{$list->name}}</option>
                     @endforeach
                   </select>
@@ -115,7 +115,7 @@
             <thead>
             <tr>
                 <th>Baranggay</th>
-                <th>Business Type</th>
+                <th>Crop Type</th>
                 <th>Address</th>
                 <th>Produced</th>
                 <th>Measurement</th>
@@ -145,7 +145,7 @@
       ajax: `/administrator/get_agri_record`,
       columns: [
           {data: 'baranggay_name'},
-          {data: 'business_type_name'},
+          {data: 'agri_type_name'},
           {data: 'address'},
           {data: 'produced'},
           {data: function(d){
@@ -210,7 +210,7 @@
 
 
     $('input[name="id"]').val(data.id);
-    $('select[name="business_type"]').val(data.business_type).change();
+    $('select[name="agri_type"]').val(data.agri_type).change();
     $('select[name="measurement"]').val(data.measurement).change();
     $('select[name="baranngay"]').val(data.baranngay).change();
     $('textarea[name="remarks"]').val(data.remarks);
