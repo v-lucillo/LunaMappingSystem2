@@ -10,6 +10,8 @@ use Yajra\DataTables\DataTables;
 
 use App\Models\BaranggayRecordModel;
 use App\Models\AgricultureModel;
+use App\Models\PopulationTable;
+use App\Models\FacilitiesModel;
 
 
 class AdministratorController extends Controller
@@ -63,6 +65,20 @@ class AdministratorController extends Controller
         return view("administrator.agriculture", [
             "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
             "crop_type_list" => DB::select("SELECT * FROM agri_type_table")
+        ]);
+    }
+
+    public function population(){
+        return view("administrator.population", [
+            "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
+            "business_list" => DB::select("SELECT * FROM business_table")
+        ]);
+    }
+
+    public function facilities(){
+        return view("administrator.facilities", [
+            "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
+            "business_list" => DB::select("SELECT * FROM business_table")
         ]);
     }
 
@@ -123,6 +139,19 @@ class AdministratorController extends Controller
     }
 
 
+    public function create_facility_record(Request $request){
+        $data = $request->all();
+        $id =  null;
+        if(isset($data['id'])){
+            $id =  $data['id'];
+        }
+        unset($data['id']);
+        FacilitiesModel::updateOrCreate(["id" => $id], $data);
+    }
+
+
+
+
     public function create_agri_record(Request $request){
         $data = $request->all();
         $id =  null;
@@ -134,12 +163,33 @@ class AdministratorController extends Controller
     }
 
 
+    public function create_population_record(Request $request){
+        $data = $request->all();
+        $id =  null;
+        if(isset($data['id'])){
+            $id =  $data['id'];
+        }
+        unset($data['id']);
+        PopulationTable::updateOrCreate(["id" => $id], $data);
+    }
+
 
     public function get_baranggay_record(){
         return DataTables::of(
             DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC")
         )->make(true);
     }
+
+
+    public function get_facility_record(){
+        return DataTables::of(
+            DB::select("SELECT a.*, c.name as baranggay_name  
+                        FROM facilities_table a
+                        LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                        ORDER BY a.id DESC")
+        )->make(true);
+    }
+
 
 
     public function get_agri_record(){
@@ -152,6 +202,16 @@ class AdministratorController extends Controller
         )->make(true);
     }
 
+
+
+    public function get_population_record(){
+        return DataTables::of(
+            DB::select("SELECT a.*, c.name as baranggay_name  
+                        FROM population_table a 
+                        LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                        ORDER BY a.id DESC")
+        )->make(true);
+    }
 
 
     public function get_baranggay_record_for_map(Request $request){

@@ -87,6 +87,23 @@
           <span>Agriculture</span>
         </a>
       </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/administrator/population">
+          <i class="ri-user-location-fill"></i>
+          <span>Population</span>
+        </a>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/administrator/facilities">
+          <i class="bx bxs-buildings"></i>
+          <span>Facilities</span>
+        </a>
+      </li>
+
     </ul>
 
   </aside><!-- End Sidebar-->

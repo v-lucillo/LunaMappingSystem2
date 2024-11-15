@@ -23,7 +23,7 @@
   <link href="{{asset('admintemplate/assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
   <link href="{{asset('admintemplate/assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
   <link href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" rel="stylesheet">
-
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.css" rel="stylesheet">
   <!-- Template Main CSS File -->
   <link href="{{asset('admintemplate/assets/css/style.css')}}" rel="stylesheet">
 

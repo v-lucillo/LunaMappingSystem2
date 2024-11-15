@@ -26,6 +26,10 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
     Route::get('home','AdministratorController@home')->name('home');
     Route::get('barangay','AdministratorController@barangay')->name('barangay');
     Route::get('agriculture','AdministratorController@agriculture')->name('agriculture');
+    Route::get('population','AdministratorController@population')->name('population');
+    Route::get('facilities','AdministratorController@facilities')->name('facilities');
+
+
 
     Route::post('upload_image','AdministratorController@upload_image')->name('upload_image');
 
@@ -33,6 +37,10 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
 
     Route::get('create_baranggay_record','AdministratorController@create_baranggay_record')->name('create_baranggay_record');
     Route::get('create_agri_record','AdministratorController@create_agri_record')->name('create_agri_record');
+    Route::get('create_population_record','AdministratorController@create_population_record')->name('create_population_record');
+    Route::get('create_facility_record','AdministratorController@create_facility_record')->name('create_facility_record');
+    Route::get('get_facility_record','AdministratorController@get_facility_record')->name('get_facility_record');
+
 
 
     Route::get('get_baranggay_record','AdministratorController@get_baranggay_record')->name('get_baranggay_record');
@@ -40,6 +48,8 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
     Route::get('get_barangay_chart','AdministratorController@get_barangay_chart')->name('get_barangay_chart');
 
     Route::get('get_baranggay_record_for_map','AdministratorController@get_baranggay_record_for_map')->name('get_baranggay_record_for_map');
+
+    Route::get('get_population_record','AdministratorController@get_population_record')->name('get_population_record');
 
 });
 
