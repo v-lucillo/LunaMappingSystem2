@@ -36,6 +36,290 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
 
+
+        @media (max-width: 1024px) {
+    
+    .pctr{
+        padding-bottom: 40px;
+       }
+       
+       .navigation-auto{
+          margin-left: -180px;
+       }
+       
+       .navigation-manual{
+       margin-left: -80px;
+       }
+       
+       .slider{
+           width: 700px;
+           height: 700px;
+           border-radius: 10px;
+           overflow: hidden;
+           margin-left: 40px;
+           margin-top: 10px;
+       }
+       
+       .slides{
+           width: 400%;
+           height: 500px;
+           display: flex;
+       }
+       
+       .slide img{
+           width: 700px;
+           height: 660px;
+       }
+       
+       .person{
+           position: absolute;
+           margin-left: 900px;
+           margin-top: -700px;
+       }
+       
+       .mayor h2{
+           font-size: .8em;
+           float: right;
+           text-align: center;
+           margin-top: 50px;
+           margin-right: -80px;
+          
+           color: white;
+       }
+       .mayor h1{
+           color: #50C878;
+           float: right;
+           font-size: 1em;
+           margin-right: 10px;
+
+       }
+       .v_mayor{
+           display: flex;
+           
+       }
+       .v_mayor h1{
+           font-size: 1em;
+           color:#50C878;
+           float: right;
+           margin-right: 70px;
+           
+        }
+        .v_mayor h2{
+            font-size: .8em;
+            float: right;
+            text-align: center;
+            margin-right: 20px;
+            margin-top: -10px;
+            color: white;
+            
+        }
+        #map{
+            width: 640px;
+        }
+        .mapa{
+            font-size: 1em;
+            margin-top: 150px;
+            
+        }
+        .graphBox h1{
+            font-size: 1em;
+        }
+        .graphBox .box{
+            width: 600px;
+            margin-left: 10px;
+        }
+    
+ }
+
+ /* large laptop */
+
+ @media (max-width: 1440px){
+    ul, a {
+        font-family: "Motserrat", sans-serif;
+        font-weight: 500;
+        font-size: 12px;
+        color: #0b171c;
+        text-decoration: none;
+        display: flex;
+    }
+    .nav_links a{
+        background-color: transparent;
+        color: white;
+        
+    }
+    .nav_links{
+        margin-left: 450px;
+        list-style: none;
+        
+    }
+    .nav_links li{
+        display: inline-block;
+        padding: 0px 20px;
+    }
+    .nav_links li a{
+      transition:all 0.3s ease 0s;
+    }
+    .nav_links :hover{
+        color:rgb(28, 106, 49)
+    }
+    .nav_links :active{
+        color: rgb(37, 132, 39);
+    }
+    .login{
+        border-color: #0b171c;
+        border-style: solid;
+        border-radius: 10px;
+       
+    }
+    button{
+        padding: 5px 20px;
+        /* background: rgb(210, 214, 7); */
+        border: #19191a;
+        background: transparent;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        transition:all 0.3s ease 0s;
+        /* margin-right: 10px; */
+    }
+    
+    
+    .pctr{
+       
+       padding-bottom: 40px;   
+    }
+    .person h2{
+        color: #19191a;  
+    }
+    .person img{
+        background-color: #ffffff;
+        border-radius: 30px;
+        width: 200px;
+        
+    }
+    .mayor{
+        display: flex;
+        padding-bottom: 40px;
+        
+    }
+    .person img{
+        box-shadow: 20px 20px 40px rgb(13, 15, 12), -10px -10px 30px #4a4a4a
+    }
+    .mayor h2{
+        font-size: 1.2em;
+        float: right;
+        text-align: center;
+        margin-top: -10px;
+        margin-right: 120px;
+        color: white;
+    }
+    .mayor h1{
+        color: #50C878;
+        float: right;
+        font-size: 1em;
+        margin-right: 200px;
+    }
+    .v_mayor{
+        display: flex;
+        
+    }
+    .v_mayor h2{
+        font-size: 1.2em;
+        float: right;
+        text-align: center;
+        margin-right: 100px;
+        margin-top: -10px;
+        color: white;
+        
+    }
+    .v_mayor h1{
+        font-size: 1em;
+        color:#50C878;
+        float: right;
+        margin-right: 160px;
+        
+    }
+    
+ }
+
+ /* tablet */
+ 
+ @media (max-width: 768px){
+    #map{
+        width: 540px;
+    }
+    .mapa{
+        font-size: 1em;
+        margin-top: 150px;
+        
+    }
+    .graphBox h1{
+        font-size: 1em;
+    }
+    .graphBox .box{
+        width: 500px;
+        margin-left: 10px;
+    }
+
+    .pctr{
+   
+        padding-bottom: 40px;   
+     }
+     .person h2{
+         color: #19191a;  
+     }
+     .person img{
+         background-color: #ffffff;
+         border-radius: 30px;
+         width: 200px;
+         
+     }
+     .mayor{
+         display: flex;
+         padding-bottom: 40px;
+         
+     }
+     .person img{
+         box-shadow: 20px 20px 40px rgb(13, 15, 12), -10px -10px 30px #4a4a4a
+     }
+     .mayor h2{
+         font-size: 1.2em;
+         float: right;
+         text-align: center;
+         margin-top: -10px;
+         margin-right: 10px;
+         color: white;
+     }
+     .mayor h1{
+         color: #50C878;
+         float: right;
+         font-size: 1em;
+         margin-right: 70px;
+         
+     }
+     .v_mayor{
+         display: flex;
+         
+     }
+     .v_mayor h2{
+         font-size: 1.2em;
+         float: right;
+         text-align: center;
+         margin-right: 10px;
+         margin-top: -10px;
+         color: white;
+     }
+     .v_mayor h1{
+         font-size: 1em;
+         color:#50C878;
+         float: right;
+         margin-right: 50px;
+         
+     }
+     
+    }
+    
+
     /* #map { position: absolute; top: 0; bottom: 0; width: 100%; }
         .coordinates {
         background: rgba(0, 0, 0, 0.5);

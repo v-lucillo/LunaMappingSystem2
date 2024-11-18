@@ -225,6 +225,28 @@ class AdministratorController extends Controller
         return $data;
     }
 
+
+
+    public function get_facilities_record_for_map(Request $request){
+        return DB::select("SELECT a.*, b.name as baranggay_name  FROM facilities_table a LEFT JOIN baranggay_table b ON a.baranngay = b.id");
+    }
+
+    public function get_population_records(Request $request){
+        $id =  $request->id;
+        if($id){
+            $data = DB::select("SELECT population_table.group, SUM(COUNT) count
+                                FROM population_table
+                                WHERE baranngay = $id
+                                GROUP BY population_table.group");
+        }else{
+            $data = DB::select("SELECT population_table.group, SUM(COUNT) count
+                                FROM population_table
+                                GROUP BY population_table.group");
+        }
+
+        return $data;
+    }
+
     public function get_barangay_chart(Request $request){
         $id =  $request->id;
         if($id){

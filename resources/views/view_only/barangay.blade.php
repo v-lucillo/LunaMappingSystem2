@@ -1,47 +1,108 @@
 @extends('view_only.layout.master')
 
 @section('css')
+<style type="text/css">
+  * {
+  box-sizing: border-box;
+}
 
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Float four columns side by side */
+.column {
+  float: left;
+  width: 30.333%;
+  padding: 0 10px;
+  margin: 20px;
+}
+
+/* Remove extra left and right margins, due to padding in columns */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+/* Responsive columns - one column layout (vertical) on small screens */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+</style>
 @endsection
 
 @section('container')
 
 <div style="">
 <div class="dropdown">
-      <div class="select">
-          <span class="selected">Barangays</span>
-          <div class="caret"></div>
-      </div>
-      <ul class="menu">
-         <li id="option_brngy" __id = "">
-            <p >All</p>
-          </li>
-         @foreach($barangay_list as $row)
-          <li id="option_brngy" __id = "{{$row->id}}">
-              <p>{{$row->name}}</p>
-          </li>
-         @endforeach
-      </ul>
+  <div class="select">
+      <span class="selected">Barangays</span>
+      <div class="caret"></div>
+  </div>
+  <ul class="menu">
+     <li id="option_brngy" __id = "">
+        <p >All</p>
+      </li>
+     @foreach($barangay_list as $row)
+      <li id="option_brngy" __id = "{{$row->id}}">
+          <p>{{$row->name}}</p>
+      </li>
+     @endforeach
+  </ul>
+</div>
+
+<div>
+    <div id="map" class="map"></div>
+    <pre id="coordinates" class="coordinates"></pre>
+</div>
+
+  
+  <div class="row">
+  <div class="column">
+    <div class="card">
+      <h1>Senior Citizen</h1>
+      <h2 name = "sc"></h2>
     </div>
-
-    <div>
-        <div id="map" class="map"></div>
-<pre id="coordinates" class="coordinates"></pre>
+  </div>
+  <div class="column">
+    <div class="card">
+      <h1>Male</h1>
+      <h2 name = "m"></h2>
     </div>
-
-
-
+  </div>
+  <div class="column">
+    <div class="card">
+      <h1>Female</h1>
+      <h2 name = "f"></h2>
+    </div>
+  </div>
+</div>
 
 <div class="graphBox">
   <h1>Graph</h1>
   <div class="box">
       <canvas id="myChart"></canvas>
   </div>
-
-  
 </div>
 
 </div>
+
 
 
 @endsection
@@ -237,6 +298,42 @@ function render_marker(id = null){
 
 }
 
+
+
+function render_population(id = null){
+$('h2[name="sc"]').text("");
+$('h2[name="m"]').text("");
+$('h2[name="f"]').text("");
+
+  $.ajax({
+    url: `/administrator/get_population_records`,
+    data: {
+      id: id
+    },
+    success: function(e){
+      for(let id in e){
+        if(e[id].group == 1){
+          $('h2[name="sc"]').text(e[id].count);
+        }
+        if(e[id].group == 2){
+          $('h2[name="m"]').text(e[id].count);
+        }
+
+        if(e[id].group == 3){
+          $('h2[name="f"]').text(e[id].count);
+        }
+      }
+    }
+  });
+
+}
+
+render_population();
+
+
+
+
+
 render_marker();
 const ctx = document.getElementById('myChart');
   
@@ -303,6 +400,7 @@ $('li#option_brngy').on('click', function(){
   let id = $(this).attr('__id');
   render_marker(id);
   render_chart(id);
+  render_population(id);
   // agri_record_table.search($(this).text().trim()).draw();
 });
 

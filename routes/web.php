@@ -42,6 +42,8 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
     Route::get('get_facility_record','AdministratorController@get_facility_record')->name('get_facility_record');
 
 
+    Route::get('get_population_records','AdministratorController@get_population_records')->name('get_population_records');
+
 
     Route::get('get_baranggay_record','AdministratorController@get_baranggay_record')->name('get_baranggay_record');
     Route::get('get_agri_record','AdministratorController@get_agri_record')->name('get_agri_record');
@@ -49,6 +51,8 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
 
     Route::get('get_baranggay_record_for_map','AdministratorController@get_baranggay_record_for_map')->name('get_baranggay_record_for_map');
 
+
+    Route::get('get_facilities_record_for_map','AdministratorController@get_facilities_record_for_map')->name('get_facilities_record_for_map');
     Route::get('get_population_record','AdministratorController@get_population_record')->name('get_population_record');
 
 });
