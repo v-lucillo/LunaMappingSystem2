@@ -312,14 +312,14 @@ $('h2[name="f"]').text("");
     },
     success: function(e){
       for(let id in e){
-        if(e[id].group == 1){
+        if(e[id].group == 3){
           $('h2[name="sc"]').text(e[id].count);
         }
-        if(e[id].group == 2){
+        if(e[id].group == 1){
           $('h2[name="m"]').text(e[id].count);
         }
 
-        if(e[id].group == 3){
+        if(e[id].group == 2){
           $('h2[name="f"]').text(e[id].count);
         }
       }
