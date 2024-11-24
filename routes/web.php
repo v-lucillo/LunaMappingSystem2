@@ -17,6 +17,7 @@ use App\Http\Controllers\UserController;
 // });
 
 // test
+    
 
 Route::get('administrator','AdministratorController@sign_in_page')->name('administrator');
 Route::get('login','AdministratorController@login')->name('login');
