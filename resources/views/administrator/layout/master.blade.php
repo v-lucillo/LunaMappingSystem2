@@ -35,10 +35,10 @@
         
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>Change password</span>
-              </a>
+              <span class="dropdown-item d-flex align-items-center" id = "add_user_button" style="cursor: pointer;">
+                <i class="bx bxs-user-plus"></i>
+                <span>Add User</span>
+              </span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -46,7 +46,7 @@
 
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -113,6 +113,54 @@
 
 
 
+<div class="modal fade" id="add_user_modal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form name = "add_user_form">
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-3 col-form-label">Username</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" name ="user_name" placeholder="(e.g admin2)">
+                <span style="color: red;" name = "user_name"></span>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-3 col-form-label">Password</label>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" name ="password" placeholder="*********">
+                <span style="color: red;" name = "password"></span>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <label for="inputText" class="col-sm-3 col-form-label">Confirm Password</label>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" name ="password_confirmation" placeholder="*********">
+                <span style="color: red;" name = "password_confirmation"></span>
+              </div>
+            </div>
+
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" name = "save_user_button">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
   <main id="main" class="main">
 
@@ -128,6 +176,45 @@
   @yield('js')
 </body>
 
+<script type="text/javascript">
+  const add_user_modal = new bootstrap.Modal($('#add_user_modal'));
+
+  $('#add_user_button').on('click', function(){
+    add_user_modal.show();
+  });
+
+
+  const form  = $('form[name="add_user_form"]');
+
+  $('button[name="save_user_button"]').on('click', function(){
+    form.find('span').empty();
+    $.ajax({
+      url: `/administrator/add_user`,
+      data: form.serializeArray(),
+      success: function(e){
+        form.trigger('reset');
+        add_user_modal.hide();
+        Toastify({
+                  text: "Success",
+                  duration: 3000,
+                  newWindow: true,
+                  close: true,
+                  gravity: "top", // `top` or `bottom`
+                  position: "center", // `left`, `center` or `right`
+                  stopOnFocus: true, // Prevents dismissing of toast on hover
+                  className: "info",
+                  onClick: function(){} // Callback after click
+                }).showToast();
+      },
+      error: function(e){
+        let error = e.responseJSON.errors;
+        for(let id in error){
+          form.find(`span[name="${id}"]`).empty().append(error[id]);
+        }
+      }
+    });
+  });
+</script>
 </html>
 
 

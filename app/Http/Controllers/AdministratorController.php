@@ -19,6 +19,24 @@ class AdministratorController extends Controller
     //
 
 
+    public function logout(){
+        session()->flush();
+        return redirect()->route('home');
+    }
+
+
+    public function add_user(Request $request){
+        $request->validate([
+            "user_name" => 'required|unique:user_table,user_name',
+            "password" => 'required|confirmed'
+        ]);
+
+        $data = $request->all();
+        unset($data['password_confirmation']);
+        DB::table('user_table')->insert($data);
+    }
+
+
     public function login(Request $request){
         $data = $request->all();
         $user_name = $data['user_name'];

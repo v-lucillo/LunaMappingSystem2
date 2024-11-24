@@ -20,7 +20,7 @@ use App\Http\Controllers\UserController;
 
 Route::get('administrator','AdministratorController@sign_in_page')->name('administrator');
 Route::get('login','AdministratorController@login')->name('login');
-
+Route::get('logout','AdministratorController@logout')->name('logout');
 
 Route::prefix("administrator")->name("administrator.")->group(function(){ //admin
     Route::get('home','AdministratorController@home')->name('home');
@@ -54,6 +54,9 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
 
     Route::get('get_facilities_record_for_map','AdministratorController@get_facilities_record_for_map')->name('get_facilities_record_for_map');
     Route::get('get_population_record','AdministratorController@get_population_record')->name('get_population_record');
+
+
+    Route::get('add_user','AdministratorController@add_user')->name('add_user');
 
 });
 
