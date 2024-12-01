@@ -297,6 +297,31 @@ class AdministratorController extends Controller
     }
 
 
+    public function get_agri_chart(){
+        $data = DB::select("SELECT b.name as agri_type_name, SUM(a.produced) AS produced
+                            FROM agriculture_table a 
+                            LEFT JOIN agri_type_table b on b.id = a.agri_type 
+                            GROUP BY b.name");
+
+        $label = [];
+        $set = [];
+        $color = ["red", "blue", "yellow"];
+
+        foreach ($data as $row) {
+            array_push($label, $row->agri_type_name);
+            array_push($set, $row->produced);
+        }
+
+        return [
+            "label" => $label,
+            "set" => $set,
+            "color" => $color
+        ];
+
+
+    }
+
+
 
     public function get_all_barangays(Request $request){
         $id = $request->id;

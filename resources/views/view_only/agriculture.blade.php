@@ -238,15 +238,47 @@
         </table>
   </div>
 
+
+
+<canvas id="chartId" aria-label="chart" height="350" width="900"></canvas>
+
 @endsection
 
 
 @section('js')
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 <script src="{{asset('lunamapping_template/pie.js')}}"></script>
 
+<script>
+  $.ajax({
+    url: `/administrator/get_agri_chart`,
+    success: function(e){
+      var chrt = document.getElementById("chartId").getContext("2d");
+      var chartId = new Chart(chrt, {
+         type: 'pie',
+         data: {
+            labels: e.label,
+            datasets: [{
+               label: "#",
+               data: e.set,
+               backgroundColor: e.color,
+               hoverOffset: 5
+            }],
+         },
+         options: {
+            responsive: false,
+         },
+      });
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+</script>
 <script type="text/javascript">
   const agri_record_table =  $('table[name="agri_record_table"]').DataTable({
       ajax: `/administrator/get_agri_record`,

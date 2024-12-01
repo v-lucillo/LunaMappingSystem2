@@ -64,5 +64,8 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
 
 
     Route::get('get_all_barangays','AdministratorController@get_all_barangays')->name('get_all_barangays');
+
+    Route::get('get_agri_chart','AdministratorController@get_agri_chart')->name('get_agri_chart');
+
 });
 
