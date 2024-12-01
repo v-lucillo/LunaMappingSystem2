@@ -34,12 +34,15 @@
            
         
 
-            <li>
-              <span class="dropdown-item d-flex align-items-center" id = "add_user_button" style="cursor: pointer;">
-                <i class="bx bxs-user-plus"></i>
-                <span>Add User</span>
-              </span>
-            </li>
+            @if(session('user')->id == 1)
+              <li>
+                <span class="dropdown-item d-flex align-items-center" id = "add_user_button" style="cursor: pointer;">
+                  <i class="bx bxs-user-plus"></i>
+                  <span>Add User</span>
+                </span>
+              </li>
+
+            @endif
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -107,6 +110,7 @@
     </ul>
 
   </aside><!-- End Sidebar-->
+
 
 
 

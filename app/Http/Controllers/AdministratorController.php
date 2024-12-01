@@ -235,9 +235,9 @@ class AdministratorController extends Controller
     public function get_baranggay_record_for_map(Request $request){
         $id =  $request->id;
         if($id){
-            $data = DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay WHERE a.baranngay = $id ORDER BY a.id DESC");
+            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay WHERE a.baranngay = $id ORDER BY a.id DESC");
         }else{
-            $data = DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC");
+            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC");
         }
 
         return $data;
@@ -268,28 +268,42 @@ class AdministratorController extends Controller
     public function get_barangay_chart(Request $request){
         $id =  $request->id;
         if($id){
-            $data = DB::select("SELECT b.name, COUNT(*) AS quantity
+            $data = DB::select("SELECT b.name, COUNT(*) AS quantity, b.color
                     FROM baranggay_record_table a
                     LEFT JOIN business_table b ON a.business_type = b.id
                     WHERE a.baranngay = $id
                     GROUP BY a.business_type");
         }else{
-            $data = DB::select("SELECT b.name, COUNT(*) AS quantity
+            $data = DB::select("SELECT b.name, COUNT(*) AS quantity, b.color
                     FROM baranggay_record_table a
                     LEFT JOIN business_table b ON a.business_type = b.id
                     GROUP BY a.business_type");
         }
         $label = [];
         $set = [];
+        $color = [];
 
         foreach ($data as $row) {
             array_push($label, $row->name);
             array_push($set, $row->quantity);
+            array_push($color, $row->color);
         }
 
         return [
             "label" => $label,
-            "set" => $set
+            "set" => $set,
+            "color" => $color
         ];
+    }
+
+
+
+    public function get_all_barangays(Request $request){
+        $id = $request->id;
+        if($id){
+            return DB::select("SELECT * FROM baranggay_table WHERE id = $id");
+        }else{
+            return DB::select("SELECT * FROM baranggay_table");
+        }
     }
 }

@@ -59,5 +59,10 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
 
     Route::get('add_user','AdministratorController@add_user')->name('add_user');
 
+
+
+
+
+    Route::get('get_all_barangays','AdministratorController@get_all_barangays')->name('get_all_barangays');
 });
 
