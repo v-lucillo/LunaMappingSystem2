@@ -297,6 +297,29 @@ class AdministratorController extends Controller
     }
 
 
+    public function get_total_biz_per_baranggay(){
+        $data = DB::select("SELECT COUNT(*) AS total, b.name, b.color
+                FROM baranggay_record_table a
+                LEFT JOIN baranggay_table b ON b.id = a.baranngay 
+               GROUP BY a.baranngay");
+
+        $label = [];
+        $set = [];
+        $color = [];
+
+        foreach ($data as $row) {
+            array_push($label, $row->name);
+            array_push($set, $row->total);
+            array_push($color, $row->color);
+        }
+
+        return [
+            "label" => $label,
+            "set" => $set,
+            "color" => $color
+        ];
+    }
+
     public function get_agri_chart(){
         $data = DB::select("SELECT b.name as agri_type_name, SUM(a.produced) AS produced
                             FROM agriculture_table a 
@@ -330,5 +353,27 @@ class AdministratorController extends Controller
         }else{
             return DB::select("SELECT * FROM baranggay_table");
         }
+    }
+
+
+
+    public function delete_rec(Request $request){
+        $data = $request->all();
+        $table = "";
+        $record_id = $data['id'];
+        $table_id =  $data['table_id'];
+
+
+        if($table_id == 1){
+            $table = "baranggay_record_table";
+        }else if($table_id == 2){
+            $table = "agriculture_table";
+        }else if($table_id == 3){
+            $table = "population_table";
+        }else if($table_id == 4){
+            $table = "facilities_table";
+        }
+
+        DB::table($table)->where('id', $record_id)->delete();
     }
 }

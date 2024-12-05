@@ -96,6 +96,7 @@
                 <th>Group</th>
                 <th>Count</th>
                 <th>Remarks</th>
+                <th></th>
             </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -131,8 +132,35 @@
           }},
           {data: 'count'},
           {data: 'remarks'},
+          {data: function(){
+            return `<button class="btn btn-danger" name="delete">Delete</button>`;
+          }}
       ],
   });
+
+
+
+  $(document).on('click', 'table[name="population_record_table"] tbody tr button[name="delete"]', function(){
+    let data = population_record_table.row($(this).parent()).data();
+    $.ajax({
+      url:`/administrator/delete_rec`,
+      data: {
+        id: data.id,
+        table_id: 3,
+      },
+      success: function(e){
+        population_record_table.ajax.reload(null, false);
+        $(this).hide();
+        card_title.text("Add Record");
+        population_form.trigger('reset');
+        alert("Record Deleted");
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  });
+
 
 
 

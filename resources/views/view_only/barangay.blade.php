@@ -101,6 +101,19 @@ body {
   </div>
 </div>
 
+
+
+
+
+<div class="graphBox">
+  <h1>Total Business per Baranggay</h1>
+  <div class="box">
+      <canvas id="biz_bar_chart"></canvas>
+  </div>
+</div>
+
+
+
 </div>
 
 
@@ -3890,6 +3903,7 @@ render_population();
 
 render_marker();
 const ctx = document.getElementById('myChart');
+
   
 function render_chart(id = null){
   $.ajax({
@@ -3908,14 +3922,6 @@ function render_chart(id = null){
 }
 
 
-// setInterval(function(){
-//     removeData(new_chart);
-
-//     addData(new_chart, ['karinderia', 'barbero', 'pancitan', 'sarisari-store', 'talipapa', 'marts'], [12, 19, 33, 21, 22, 34]);
-// }, 5000);
-
-// ['karinderia', 'barbero', 'pancitan', 'sarisari-store', 'talipapa', 'marts'],
-// [12, 19, 3, 5, 2, 3]
 
 let new_chart =  new Chart(ctx, {
   type: 'bar',
@@ -3927,6 +3933,51 @@ let new_chart =  new Chart(ctx, {
     }
   }
 });
+
+
+function biz_chart(){
+  $.ajax({
+    url:`/administrator/get_total_biz_per_baranggay`,
+    success: function(e){
+      const biz_bar_chart = document.getElementById('biz_bar_chart');
+      let new_chart_2 =  new Chart(biz_bar_chart, {
+      type: 'bar',
+      data : {
+        labels: e.label,
+        datasets: [{
+          label: 'No. business',
+          data: e.set,
+          backgroundColor: e.color,
+          borderWidth: 1
+        }]
+      },
+      options: {
+    indexAxis: 'y',
+    // Elements options apply to all of the options unless overridden in a dataset
+    // In this case, we are setting the border of each horizontal bar to be 2px wide
+    elements: {
+      bar: {
+        borderWidth: 2,
+      }
+    }
+  }
+      // options: {
+      //   scales: {
+      //     y: {
+      //       beginAtZero: true
+      //     }
+      //   }
+      // }
+    });
+
+
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+biz_chart();
   
 
 function addData(chart, label, newData, color) {

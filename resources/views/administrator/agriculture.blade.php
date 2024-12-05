@@ -122,6 +122,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Remarks</th>
+                <th></th>
             </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -161,8 +162,35 @@
           {data: 'start_date'},
           {data: 'end_date'},
           {data: 'remarks'},
+          {data: function(){
+            return `<button class="btn btn-danger" name="delete">Delete</button>`;
+          }}
       ],
   });
+
+
+
+  $(document).on('click', 'table[name="agri_record_table"] tbody tr button[name="delete"]', function(){
+    let data = agri_record_table.row($(this).parent()).data();
+    $.ajax({
+      url:`/administrator/delete_rec`,
+      data: {
+        id: data.id,
+        table_id: 2,
+      },
+      success: function(e){
+        agri_record_table.ajax.reload(null, false);
+        $(this).hide();
+        card_title.text("Add Record");
+        agri_form.trigger('reset');
+        alert("Record Deleted");
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  });
+
 
 
   $('button[name="create_agri_record"]').on('click', function(){
