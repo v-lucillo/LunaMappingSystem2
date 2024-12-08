@@ -74,7 +74,8 @@ class AdministratorController extends Controller
     public function barangay(){
         return view("administrator.barangay", [
             "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
-            "business_list" => DB::select("SELECT * FROM business_table")
+            "business_list" => DB::select("SELECT * FROM business_table"),
+            "biz_sec_List" => DB::select("SELECT * FROM biz_sec_table")
         ]);
     }
 
@@ -194,7 +195,11 @@ class AdministratorController extends Controller
 
     public function get_baranggay_record(){
         return DataTables::of(
-            DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC")
+            DB::select("SELECT a.*, b.name as business_type_name, c.name as baranggay_name, d.name as biz_sec_name 
+                FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type 
+                LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                LEFT JOIN biz_sec_table d on d.id =  a.biz_sec
+                ORDER BY a.id DESC")
         )->make(true);
     }
 
@@ -234,10 +239,39 @@ class AdministratorController extends Controller
 
     public function get_baranggay_record_for_map(Request $request){
         $id =  $request->id;
-        if($id){
-            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay WHERE a.baranngay = $id ORDER BY a.id DESC");
-        }else{
-            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay ORDER BY a.id DESC");
+        $biz_sec = $request->biz_sec;
+
+
+        if($id && $biz_sec){
+            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name, d.name 
+                                FROM baranggay_record_table a 
+                                LEFT JOIN business_table b on b.id = a.business_type 
+                                LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                                LEFT JOIN biz_sec_table d ON d.id = a.biz_sec
+                                WHERE a.baranngay = $id AND d.id = $biz_sec 
+                                ORDER BY a.id DESC");
+        }else if($id){
+            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name, d.name 
+                                FROM baranggay_record_table a 
+                                LEFT JOIN business_table b on b.id = a.business_type 
+                                LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                                LEFT JOIN biz_sec_table d ON d.id = a.biz_sec
+                                WHERE a.baranngay = $id
+                                ORDER BY a.id DESC");
+
+        }else if($biz_sec){
+            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name, d.name 
+                                FROM baranggay_record_table a 
+                                LEFT JOIN business_table b on b.id = a.business_type 
+                                LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                                LEFT JOIN biz_sec_table d ON d.id = a.biz_sec
+                                WHERE d.id = $biz_sec 
+                                ORDER BY a.id DESC");
+        }
+        else{
+            $data = DB::select("SELECT a.*,b.color, b.name as business_type_name, c.name as baranggay_name, d.name  FROM baranggay_record_table a LEFT JOIN business_table b on b.id = a.business_type LEFT JOIN baranggay_table c ON c.id = a.baranngay 
+                LEFT JOIN biz_sec_table d ON d.id = a.biz_sec
+                ORDER BY a.id DESC");
         }
 
         return $data;
@@ -318,6 +352,77 @@ class AdministratorController extends Controller
             "set" => $set,
             "color" => $color
         ];
+    }
+
+
+    public function population_chart(Request $request){
+        $request->validate([
+            "filter_year" => 'required'
+        ]);
+
+        $data = $request->all();
+        $year =  $data['filter_year'];
+        $barangay =  isset($data['filter_baranggay'])?$data['filter_baranggay']:false;
+
+
+        $filter = "";
+        if($barangay){
+            $filter = " AND b.id =  $barangay";
+        }
+
+
+        $population =  DB::select("SELECT a.*,
+                                    b.name
+                                    FROM population_table a
+                                    LEFT JOIN baranggay_table b ON b.id = a.baranngay
+                                    WHERE a.year = '$year' $filter");
+
+
+        $label = [];
+        $male = [];
+        $female = [];
+        $sc_male = [];
+        $sc_female = [];
+
+        foreach ($population as $row) {
+            array_push($label, $row->name);
+            array_push($male, $row->male);
+            array_push($female, $row->female);
+            array_push($sc_male, $row->sc_male);
+            array_push($sc_female, $row->sc_female);
+        }
+
+        return [
+            "label" => $label,
+            "datasets" => [
+                [
+                    "label" => "Male",
+                    "data" => $male,
+                    "borderColor" => "#ffa69e",
+                    "backgroundColor" => "#ffa69e",
+                ],
+                [
+                    "label" => "Female",
+                    "data" => $female,
+                    "borderColor" => "#faf3dd",
+                    "backgroundColor" => "#faf3dd",
+                ],
+                [
+                    "label" => "Senior Male",
+                    "data" => $sc_male,
+                    "borderColor" => "#b8f2e6",
+                    "backgroundColor" => "#b8f2e6",
+                ],
+                [
+                    "label" => "Senior Female",
+                    "data" => $sc_female,
+                    "borderColor" => "#aed9e0",
+                    "backgroundColor" => "#aed9e0",
+                ],
+            ],
+        ];
+
+
     }
 
     public function get_agri_chart(){

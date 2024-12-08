@@ -227,9 +227,6 @@
                 <th>Crop Type</th>
                 <th>Address</th>
                 <th>Produced</th>
-                <th>Measurement</th>
-                <th>Start Date</th>
-                <th>End Date</th>
                 <th>Remarks</th>
             </tr>
             </thead>
@@ -259,7 +256,7 @@
     success: function(e){
       var chrt = document.getElementById("chartId").getContext("2d");
       var chartId = new Chart(chrt, {
-         type: 'pie',
+         type: 'bar',
          data: {
             labels: e.label,
             datasets: [{
@@ -287,18 +284,6 @@
           {data: 'agri_type_name'},
           {data: 'address'},
           {data: 'produced'},
-          {data: function(d){
-            if(d.measurement ==  "1"){
-              return "Kilogram";
-            }else if(d.measurement ==  "2"){
-              return "Metric Ton";
-            }
-            else if(d.measurement ==  "3"){
-              return "Peice";
-            }
-          }},
-          {data: 'start_date'},
-          {data: 'end_date'},
           {data: 'remarks'},
       ],
   });

@@ -73,6 +73,22 @@
                 </div>
               </div>
 
+
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Business Sector</label>
+                <div class="col-sm-9">
+                  <select class="form-select" name = "biz_sec">
+                    <option selected="">Open this select menu</option>
+                    @foreach($biz_sec_List as $list)
+                      <option value="{{$list->id}}">{{$list->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+
+
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-3 col-form-label">Remarks</label>
                 <div class="col-sm-9">
@@ -100,6 +116,7 @@
             <tr>
                 <th>Baranggay</th>
                 <th>Business Type</th>
+                <th>Business Sec</th>
                 <th>Address</th>
                 <th>Remarks</th>
                 <th>Coordinates</th>
@@ -111,13 +128,131 @@
         </table>
       </div>
     </div>
+
+
+
+
+    <div class="col-6">
+      <div class="card">
+          <div class="card-body">
+            <canvas id="myChart"></canvas>
+          </div>
+      </div> 
+    </div>
+
+    
+    <div class="col-6">
+      <div class="card">
+          <div class="card-body">
+            <canvas id="biz_bar_chart"></canvas>
+          </div>
+      </div> 
+    </div>
+
+
+
+
+
   </div>
+
 @endsection
 
 
 @section('js')
 
 <script type="text/javascript">
+
+
+
+
+const ctx = document.getElementById('myChart');
+const biz_bar_chart = document.getElementById('biz_bar_chart');
+  let new_chart_2 =  new Chart(biz_bar_chart, {
+  type: 'bar',
+  options: {
+    indexAxis: 'y',
+    // Elements options apply to all of the options unless overridden in a dataset
+    // In this case, we are setting the border of each horizontal bar to be 2px wide
+    elements: {
+      bar: {
+        borderWidth: 2,
+      }
+    }
+  }
+});
+
+
+  let new_chart =  new Chart(ctx, {
+  type: 'bar',
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+  
+function render_chart(id = null){
+  $.ajax({
+    url: `/administrator/get_barangay_chart`,
+    data: {
+      id: id
+    },
+    success: function(e){
+      removeData(new_chart);
+      addData(new_chart, e.label, e.set, e.color);
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+
+
+function biz_chart(){
+  $.ajax({
+    url:`/administrator/get_total_biz_per_baranggay`,
+    success: function(e){
+      removeData(new_chart_2);
+      addData(new_chart_2, e.label, e.set, e.color);
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+biz_chart();
+  
+  
+
+
+function addData(chart, label, newData, color) {
+  chart.data = {
+    labels: label,
+    datasets: [{
+      label: '# business',
+      data: newData,
+      backgroundColor: color,
+      borderWidth: 1
+    }]
+  };
+  chart.update();
+}
+
+function removeData(chart) {
+    chart.data.labels = [];
+    chart.data.datasets = [];
+    chart.update();
+}
+
+render_chart();
+
+
+
+
+
   const barrangay_form =  $('form[name="barrangay_form"]');
   const remove_edit_button =  $('i[name="remove_edit_button"]');
   const card_title =  $('h5[name="card_title"]');
@@ -127,6 +262,7 @@
       columns: [
           {data: 'baranggay_name'},
           {data: 'business_type_name'},
+          {data: 'biz_sec_name'},
           {data: 'address'},
           {data: 'remarks'},
           {data: 'coordinates'},
@@ -149,6 +285,8 @@
       success: function(e){
         baranggay_record_table.ajax.reload(null, false);
         $(this).hide();
+        render_chart();
+        biz_chart();
         card_title.text("Add Record");
         barrangay_form.trigger('reset');
         alert("Record Deleted");
@@ -164,7 +302,6 @@
 
   $(document).on('click', 'table[name="baranggay_record_table"] tbody tr', function(){
     let data = baranggay_record_table.row(this).data();
-    console.log(data);
     remove_edit_button.show();
     card_title.text("Modify Record");
     for(let key in data){
@@ -173,6 +310,7 @@
     $('input[name="id"]').val(data.id);
     $('select[name="business_type"]').val(data.business_type).change();
     $('select[name="baranngay"]').val(data.baranngay).change();
+    $('select[name="biz_sec"]').val(data.biz_sec).change();
     $('textarea[name="remarks"]').val(data.remarks);
 
 
@@ -194,6 +332,8 @@
       url: `/administrator/create_baranggay_record`,
       data: barrangay_form.serializeArray(),
       success: function(e){
+        render_chart();
+        biz_chart();
         Toastify({
                   text: "Success",
                   duration: 3000,

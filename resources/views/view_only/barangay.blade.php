@@ -43,77 +43,305 @@ body {
     display: block;
     margin-bottom: 20px;
   }
+  
+ 
 }
+.box1{
+   height: 200px;
+   width: 200px;
+   float: left;
+}
+.box2{
+   height: 200px;
+   width: 200px;
+   float: right;
+}
+
+.graphs h1{
+    font-size: 1.5em;
+}
+.graphs h2{
+    font-size: 1.5em;
+    color: #F0F8FF;
+    margin-top:60px;
+    margin-left:-70px;
+}
+.graphs{
+    display: flex;
+}
+.graphs .box{
+     height: 300px;
+   width: 500px;
+   margin-left:-100px;
+}
+.card{
+    width:200px;
+    height:100px;
+    border-radius:20px;
+    align-items: center;
+    margin-left:150px;
+}
+.card h1{
+    font-size:1em;
+    
+}
+.card h2{
+    font-size:1em;
+    
+}
+
+
+/* CSS */
+.button-42 {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #FF7E31, #E62C03);
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 100%;
+  z-index: 9;
+  border: 0;
+  transition: box-shadow .2s;
+}
+
+.button-42:hover {
+  box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
+}
+
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+
 </style>
+
+ <style>
+      .checkbox-wrapper-36 *,
+      .checkbox-wrapper-36 *::before,
+      .checkbox-wrapper-36 *::after {
+        box-sizing: border-box;
+      }
+
+      .checkbox-wrapper-36 label {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0px 50px 20px 0 rgba(0,0,0,0.1);
+        display: flex;
+        height: 50px;
+        padding: 8px;
+        position: relative;
+        transition: transform 300ms ease, box-shadow 300ms ease;
+        width: 116px;
+      }
+
+      .checkbox-wrapper-36 input {
+        display: none;
+      }
+
+      .checkbox-wrapper-36 label:after {
+        animation: move-left-36 400ms;
+        background: #E2E2E2 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='27' height='27' viewBox='0 0 24 24'%3E%3Cpath stroke='#E2E2E2' fill='#E2E2E2' stroke-linecap='round' d='M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z'/%3E%3C/svg%3E") no-repeat center;
+        border-radius: 12px;
+        content: '';
+        left: 8px;
+        outline: none;
+        position: absolute;
+        transition: background 100ms linear;
+        width: 36px;
+        height: 36px;
+        left: 8px;
+        top: 7px;
+      }
+
+      .checkbox-wrapper-36 label:active {
+        box-shadow: 0px 10px 20px 0 rgba(0,0,0,0.2);
+        transform: scale(1.15);
+      }
+
+      .checkbox-wrapper-36 input:checked + label:after {
+        animation: move-right-36 400ms;
+        background: #6EB54E url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='27' height='27' viewBox='0 0 24 24'%3E%3Cpath stroke='white' fill='white' stroke-linecap='round' d='M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z'/%3E%3C/svg%3E") no-repeat center;
+        left: 72px;
+      }
+
+      @keyframes move-right-36 {
+        0% {
+          left: 8px;
+        }
+        75% {
+          left: 78px;
+        }
+        100% {
+          left: 72px;
+        }
+      }
+
+      @keyframes move-left-36 {
+        0% {
+          left: 72px;
+        }
+        75% {
+          left: 2px;
+        }
+        100% {
+          left: 8px;
+        }
+      }
+    </style>
 @endsection
 
 @section('container')
 
-<div style="">
-<div class="dropdown">
-  <div class="select">
-      <span class="selected">Barangays</span>
-      <div class="caret"></div>
+<fieldset style="color: #FFF">
+  <legend>Filters:</legend>
+
+  <div>
+
+    <div class="checkbox-wrapper-36">
+      Show Facilities
+      <input id="toggle-36" type="checkbox" name = "show_facilities_button">
+      <label for="toggle-36"></label>
+    </div>
+
+
   </div>
-  <ul class="menu">
-     <li id="option_brngy" __id = "">
-        <p >All</p>
-      </li>
-     @foreach($barangay_list as $row)
-      <li id="option_brngy" __id = "{{$row->id}}">
-          <p>{{$row->name}}</p>
-      </li>
-     @endforeach
-  </ul>
-</div>
+  <div class="dropdown" style="margin: 0px;margin-top: 15px; padding: 0px">
+    <div class="select">
+        <span class="selected">Barangays</span>
+        <div class="caret"></div>
+    </div>
+    <ul class="menu">
+       <li id="option_brngy" __id = "">
+          <p >All</p>
+        </li>
+       @foreach($barangay_list as $row)
+        <li id="option_brngy" __id = "{{$row->id}}">
+            <p>{{$row->name}}</p>
+        </li>
+       @endforeach
+    </ul>
+  </div>
 
-<div>
-    <div id="map" class="map"></div>
-    <pre id="coordinates" class="coordinates"></pre>
-</div>
 
+  <div class="dropdowns_biz_sec" style="margin: 0px;margin-top: 15px; padding: 0px; margin-left: 250px;">
+    <div class="select">
+        <span class="selected">Business Sector</span>
+        <div class="caret"></div>
+    </div>
+    <ul class="menu">
+       <li id="option_brngy_sec" __id = "">
+          <p >All</p>
+        </li>
+       @foreach($biz_sec_List as $row)
+        <li id="option_brngy_sec" __id = "{{$row->id}}">
+            <p>{{$row->name}}</p>
+        </li>
+       @endforeach
+    </ul>
+  </div>
   
-  <div class="row">
-  <div class="column">
-    <div class="card">
-      <h1>Senior Citizen</h1>
-      <h2 name = "sc"></h2>
+
+
+
+</fieldset>
+
+<div style="">
+
+  <div>
+      <div id="map" class="map"></div>
+      <pre id="coordinates" class="coordinates"></pre>
+  </div>
+
+    
+
+  <div class="graphs">
+      
+      
+  <div class="graphBox">
+    <h1>Graph</h1>
+    <div class="box">
+        <canvas id="myChart"></canvas>
     </div>
   </div>
-  <div class="column">
-    <div class="card">
-      <h1>Male</h1>
-      <h2 name = "m"></h2>
+
+
+
+
+
+  <div class="graphBox">
+    <h2>Total Business per Baranggay</h2>
+    <div class="box">
+        <canvas id="biz_bar_chart"></canvas>
     </div>
   </div>
-  <div class="column">
-    <div class="card">
-      <h1>Female</h1>
-      <h2 name = "f"></h2>
+
+
+
+  </div>
+
+</div>
+
+
+
+<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 100px;">
+    <div style="width:90%; height: 100%; background: #FFF; border-radius: 10px; padding: 20px">
+    <h1>Population Graph</h1>
+    <div>
+          <label for="inputNanme4" class="form-label">Year</label>
+          <input type="text" class="form-control" value="{{date('Y')}}" name = "filter_year">
     </div>
+
+
+
+    <div>
+      <label for="inputNanme4" class="form-label">Baranggay</label>
+      <select class="form-select" name = "filter_baranggay">
+        <option value ="" selected="">Open this select menu</option>
+        @foreach($barangay_list as $list)
+          <option value="{{$list->id}}">{{$list->name}}</option>
+        @endforeach
+      </select>
+    </div>
+
+
+
+    <div>
+      <button class="button-42" role="button" style="margin-bottom: 10px;" name = "filter_button">Apply Filter</button>
+      <button class="button-42" role="button" name = "reset_button">Remove Filter</button>
+
+    </div>
+
+
+
+
+   <canvas id="population_chart_canvas" style="margin-top: 20px"></canvas>
+
+
   </div>
-</div>
-
-<div class="graphBox">
-  <h1>Graph</h1>
-  <div class="box">
-      <canvas id="myChart"></canvas>
-  </div>
-</div>
-
-
-
-
-
-<div class="graphBox">
-  <h1>Total Business per Baranggay</h1>
-  <div class="box">
-      <canvas id="biz_bar_chart"></canvas>
-  </div>
-</div>
-
-
-
 </div>
 
 
@@ -122,22 +350,140 @@ body {
 
 
 @section('js')
-    
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 
 <script type="text/javascript">
+
+
+$('input[name="show_facilities_button"]').on('click', function(){
+  if($(this).is(":checked")){
+    render_marker_facilities();
+  }else{
+    for (let id in currentMarkers_facilities) {
+        currentMarkers_facilities[id].remove();
+      }
+  }
+});
+
+
+
+let filter_button =  $('button[name="filter_button"]');
+let filter_year =  $("input[name='filter_year']");
+let filter_baranggay = $("select[name='filter_baranggay']");
+let reset_button = $('button[name="reset_button"]');
+
+filter_button.on('click', function(){
+  population_chart();
+});
+
+reset_button.on('click', function(){
+  filter_year.val("{{date('Y')}}");
+  filter_baranggay.prop('selectedIndex',0);
+  population_chart();
+});
+
+
+const population_chart_canvas = document.getElementById('population_chart_canvas');
+let population_chartsss =  new Chart(population_chart_canvas, {
+  type: 'bar',
+  options: {
+    indexAxis: 'y',
+    elements: {
+      bar: {
+        borderWidth: 0,
+      }
+    }
+  }
+});
+  
+
+
+// render_marker_facilities();
+
+let currentMarkers_facilities = [];
+
+
+function render_marker_facilities(id = null) {
+  $.ajax({
+    url: `/administrator/get_facilities_record_for_map`,
+    data: {
+      id: id
+    },
+    success: function(e) {
+      for (let id in currentMarkers_facilities) {
+        currentMarkers_facilities[id].remove();
+      }
+      e.forEach((data) => {
+        let lat = data.coordinates.split("Lat: ")[1];
+        let long = data.coordinates.split("Long: ")[1].split(" -")[0];
+
+        let popup = new mapboxgl.Popup()
+          .setText(`${data.name}`)
+          .addTo(map);
+
+        let marker = new mapboxgl.Marker({ "color": data.color})
+          .setLngLat([long, lat])
+          .addTo(map)
+          .setPopup(popup);
+
+        currentMarkers_facilities.push(marker);
+
+      });
+    }
+  });
+
+}
+
+
+
+
+function population_chart(){
+  $.ajax({
+    url:`/administrator/population_chart`,
+    data: {
+      filter_year: filter_year.val(),
+      filter_baranggay: filter_baranggay.val()
+    },
+    success: function(e){
+      asdasdremoveData(population_chartsss);
+      asdsdaddData(population_chartsss, e.label, e.datasets);
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+population_chart();
+
+
+
+
+function asdsdaddData(chart, label, newData, color) {
+  chart.data = {
+    labels: label,
+    datasets: newData
+  };
+  chart.update();
+}
+
+function asdasdremoveData(chart) {
+    chart.data.labels = [];
+    chart.data.datasets = [];
+    chart.update();
+}
 
 </script>
 
 
 
 
+
 {{--  Map Script --}}
 <script>
-	// TO MAKE THE MAP APPEAR YOU MUST
-	// ADD YOUR ACCESS TOKEN FROM
-	// https://account.mapbox.com
-	mapboxgl.accessToken = 'pk.eyJ1IjoidmljdG9yaW5vaSIsImEiOiJjbGtnbDgxbjYwMWxyM2VueTZzbzdjMG9xIn0.cDWO9uV_3oq2AlHuIWQzfw';
+  // TO MAKE THE MAP APPEAR YOU MUST
+  // ADD YOUR ACCESS TOKEN FROM
+  // https://account.mapbox.com
+  mapboxgl.accessToken = 'pk.eyJ1IjoidmljdG9yaW5vaSIsImEiOiJjbGtnbDgxbjYwMWxyM2VueTZzbzdjMG9xIn0.cDWO9uV_3oq2AlHuIWQzfw';
     const coordinates = document.getElementById('coordinates');
     const map = new mapboxgl.Map({
         container: 'map',
@@ -3810,7 +4156,7 @@ function render_baranggay_borders(){
           }
         });
       }
-      render_marker();
+      // render_marker();
     },
     error: function(e){
       console.log(e);
@@ -3823,11 +4169,12 @@ function render_baranggay_borders(){
 
 let currentMarkers =  [];
 
-function render_marker(id = null){
+function render_marker(id = null, biz_sec = null){
   $.ajax({
     url: `/administrator/get_baranggay_record_for_map`,
     data: {
-      id: id
+      id: id,
+      biz_sec: biz_sec
     },
     success: function(e){
       for(let id in currentMarkers){
@@ -3838,7 +4185,7 @@ function render_marker(id = null){
         let long =  data.coordinates.split("Long: ")[1].split(" -")[0];
 
         let popup = new mapboxgl.Popup()
-          .setText(data.business_type_name)
+          .setText(data.name)
           .addTo(map);
 
           let marker = new mapboxgl.Marker({ "color": data.color })
@@ -3872,36 +4219,36 @@ $('h2[name="sc"]').text("");
 $('h2[name="m"]').text("");
 $('h2[name="f"]').text("");
 
-  $.ajax({
-    url: `/administrator/get_population_records`,
-    data: {
-      id: id
-    },
-    success: function(e){
-      for(let id in e){
-        if(e[id].group == 3){
-          $('h2[name="sc"]').text(e[id].count);
-        }
-        if(e[id].group == 1){
-          $('h2[name="m"]').text(e[id].count);
-        }
+  // $.ajax({
+  //   url: `/administrator/get_population_records`,
+  //   data: {
+  //     id: id
+  //   },
+  //   success: function(e){
+  //     for(let id in e){
+  //       if(e[id].group == 3){
+  //         $('h2[name="sc"]').text(e[id].count);
+  //       }
+  //       if(e[id].group == 1){
+  //         $('h2[name="m"]').text(e[id].count);
+  //       }
 
-        if(e[id].group == 2){
-          $('h2[name="f"]').text(e[id].count);
-        }
-      }
-    }
-  });
+  //       if(e[id].group == 2){
+  //         $('h2[name="f"]').text(e[id].count);
+  //       }
+  //     }
+  //   }
+  // });
 
 }
 
 render_population();
 
-
-
-
-
 render_marker();
+
+
+
+
 const ctx = document.getElementById('myChart');
 
   
@@ -4001,14 +4348,34 @@ function removeData(chart) {
 
 render_chart();
 
+let option_brngy = $('li#option_brngy');
+let option_brngy_sec = $('li#option_brngy_sec');
 
-$('li#option_brngy').on('click', function(){
+option_brngy.on('click', function(){
   let id = $(this).attr('__id');
-  render_marker(id);
+  let biz_sec = $('div.dropdowns_biz_sec .active').attr('__id')??null;
+
+  render_marker(id, biz_sec);
   render_chart(id);
   render_population(id);
   re_layer(id);
 });
+
+
+
+option_brngy_sec.on('click', function(){
+  let id = $(this).attr('__id');
+  let baranggay = $('div.dropdown .active').attr('__id')??null;
+
+
+  render_marker(baranggay, id);
+  render_chart(id);
+  render_population(id);
+  re_layer(id);
+});
+
+
+
 
 function re_layer(id){
   $.ajax({

@@ -18,7 +18,8 @@ class PublicController extends Controller
     public function barangay(){
         return view("view_only.barangay",[
             "barangay_list" => DB::select("SELECT * FROM baranggay_table"),
-            "business_list" => DB::select("SELECT * FROM business_table")
+            "business_list" => DB::select("SELECT * FROM business_table"),
+            "biz_sec_List" => DB::select("SELECT * FROM biz_sec_table")
         ]);
     }
 

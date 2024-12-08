@@ -131,6 +131,19 @@
       </div>
     </div>
 
+
+
+    <div class="col-12 mt-3">
+      <div class="card">
+          <div class="card-body">
+              <canvas id="chartId" width="1200px" height="400px"></canvas>
+          </div>
+      </div>
+    </div>
+
+
+
+
   </div>
 @endsection
 
@@ -138,6 +151,55 @@
 @section('js')
     <!-- create_agri_record -->
 <script type="text/javascript">
+
+
+  var chrt = document.getElementById("chartId").getContext("2d");
+  var chartId = new Chart(chrt, {
+     type: 'bar',
+     options: {
+        responsive: false,
+     },
+  });
+
+
+  function addData(chart, label, newData, color) {
+    chart.data = {
+      labels: label,
+      datasets: [{
+        label: '# business',
+        data: newData,
+        backgroundColor: color,
+        borderWidth: 1
+      }]
+    };
+    chart.update();
+  }
+
+  function removeData(chart) {
+      chart.data.labels = [];
+      chart.data.datasets = [];
+      chart.update();
+  }
+
+
+  function render_chart(){
+    $.ajax({
+      url: `/administrator/get_agri_chart`,
+      success: function(e){
+        console.log(e);
+        removeData(chartId);
+        addData(chartId, e.label, e.set, e.color);
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  }
+  render_chart();
+
+
+
+
   const agri_form =  $('form[name="agri_form"]');
   const remove_edit_button = $('i[name="remove_edit_button"]');
   const card_title =  $('h5[name="card_title"]');
@@ -198,6 +260,7 @@
       url: `/administrator/create_agri_record`,
       data: agri_form.serializeArray(),
       success: function(e){
+        render_chart();
         Toastify({
                   text: "Success",
                   duration: 3000,

@@ -31,21 +31,7 @@
 
               <input hidden name="id">
 
-              
-              <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">Group</label>
-                <div class="col-sm-9">
-                  <select class="form-select" name = "group">
-                    <option selected="">Open this select menu</option>
-                    <option value="1">Male</option>
-                    <option value="2">Female</option>
-                    <option value="3">Senior Citizen</option>
-                  </select>
-                </div>
-              </div>
-
-
-
+          
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-3 col-form-label">Year</label>
                 <div class="col-sm-9">
@@ -56,9 +42,32 @@
 
 
               <div class="row mb-3">
-                <label for="inputText" class="col-sm-3 col-form-label">Count</label>
+                <label for="inputText" class="col-sm-3 col-form-label">Male</label>
                 <div class="col-sm-9">
-                  <input type = "number" class="form-control" name ="count">
+                  <input type = "number" class="form-control" name ="male">
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Female</label>
+                <div class="col-sm-9">
+                  <input type = "number" class="form-control" name ="female">
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Senior Male</label>
+                <div class="col-sm-9">
+                  <input type = "number" class="form-control" name ="sc_male">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Senior Female</label>
+                <div class="col-sm-9">
+                  <input type = "number" class="form-control" name ="sc_female">
                 </div>
               </div>
 
@@ -93,8 +102,10 @@
             <tr>
                 <th>Year</th>
                 <th>Barangay</th>
-                <th>Group</th>
-                <th>Count</th>
+                <th>Male</th>
+                <th>Female</th>
+                <th>Senior Male</th>
+                <th>Senior Female</th>
                 <th>Remarks</th>
                 <th></th>
             </tr>
@@ -105,6 +116,37 @@
       </div>
     </div>
 
+
+    <div class="row">
+      <div class="col-12">
+          <h1>Population Graph</h1>
+      </div>
+        <div class="col-5">
+        <label for="inputNanme4" class="form-label">Year</label>
+        <input type="text" class="form-control" value="{{date('Y')}}" name = "filter_year">
+      </div>
+      <div class="col-5">
+        <label for="inputNanme4" class="form-label">Baranggay</label>
+        <select class="form-select" name = "filter_baranggay">
+          <option value ="" selected="">Open this select menu</option>
+          @foreach($barangay_list as $list)
+            <option value="{{$list->id}}">{{$list->name}}</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="col-2" style="display: flex;align-items: end;gap: 15px;justify-content: end;">
+        <button type="button" class="btn btn-success" name = "filter_button"><i class="bi bi-funnel"></i></button>
+        <button type="button" class="btn btn-warning" name = "reset_button"><i class="bi bi-trash"></i></button>
+      </div>
+      <div class = "col-12">
+          <div class="card mt-4">
+              <div class="card-body">
+                <canvas id="biz_bar_chart"></canvas>
+              </div>
+          </div>
+      </div>
+    </div>
+
   </div>
 @endsection
 
@@ -112,6 +154,74 @@
 @section('js')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
 <script type="text/javascript">
+let filter_button =  $('button[name="filter_button"]');
+let filter_year =  $("input[name='filter_year']");
+let filter_baranggay = $("select[name='filter_baranggay']");
+let reset_button = $('button[name="reset_button"]');
+
+filter_button.on('click', function(){
+  population_chart();
+});
+
+reset_button.on('click', function(){
+  filter_year.val("{{date('Y')}}");
+  filter_baranggay.prop('selectedIndex',0);
+  population_chart();
+});
+
+
+const biz_bar_chart = document.getElementById('biz_bar_chart');
+let new_chart_2 =  new Chart(biz_bar_chart, {
+  type: 'bar',
+  options: {
+    indexAxis: 'y',
+    elements: {
+      bar: {
+        borderWidth: 0,
+      }
+    }
+  }
+});
+
+
+
+function population_chart(){
+  $.ajax({
+    url:`/administrator/population_chart`,
+    data: {
+      filter_year: filter_year.val(),
+      filter_baranggay: filter_baranggay.val()
+    },
+    success: function(e){
+      removeData(new_chart_2);
+      addData(new_chart_2, e.label, e.datasets);
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+population_chart();
+
+
+
+
+function addData(chart, label, newData, color) {
+  chart.data = {
+    labels: label,
+    datasets: newData
+  };
+  chart.update();
+}
+
+function removeData(chart) {
+    chart.data.labels = [];
+    chart.data.datasets = [];
+    chart.update();
+}
+
+
+
   const population_form =  $('form[name="population_form"]');
   const remove_edit_button = $('i[name="remove_edit_button"]');
   const card_title =  $('h5[name="card_title"]');
@@ -121,16 +231,10 @@
       columns: [
           {data: 'year'},
           {data: 'baranggay_name'},
-          {data: function(d){
-            if(d.group == "1"){
-              return "Male";
-            }else if(d.group == "2"){
-              return "Female";
-            }else if(d.group == "3"){
-              return "Senior Citizen";
-            }
-          }},
-          {data: 'count'},
+          {data: 'male'},
+          {data: 'female'},
+          {data: 'sc_male'},
+          {data: 'sc_female'},
           {data: 'remarks'},
           {data: function(){
             return `<button class="btn btn-danger" name="delete">Delete</button>`;
@@ -169,6 +273,7 @@
       url: `/administrator/create_population_record`,
       data: population_form.serializeArray(),
       success: function(e){
+        population_chart();
         Toastify({
                   text: "Success",
                   duration: 3000,
@@ -228,6 +333,14 @@
     viewMode: "years", 
     minViewMode: "years"
 });
+
+
+  $("input[name=filter_year]").datepicker({
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+});
+
 
 </script>
 

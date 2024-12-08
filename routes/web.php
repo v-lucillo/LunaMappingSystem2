@@ -73,5 +73,10 @@ Route::prefix("administrator")->name("administrator.")->group(function(){ //admi
 
 
     Route::get('delete_rec','AdministratorController@delete_rec')->name('delete_rec');
+
+
+
+    Route::get('population_chart','AdministratorController@population_chart')->name('population_chart');
+
 });
 

@@ -8,7 +8,6 @@
             <li><a href="/barangay">Barangay</a></li>
             {{-- <li><a href="/councilor">Councilor</a></li> --}}
             <li><a href="/agriculture">Agricultural</a></li>
-            <li><a href="/map">Map</a></li>
             <li><a href="/contact">Contact</a></li>
             <li><a href="/about">About us</a></li>
 
