@@ -219,16 +219,29 @@ input[type=text], select {
 <fieldset style="color: #FFF">
   <legend>Filters:</legend>
 
-  <div>
+  <div style="display: flex; justify-content: center; align-items: end; gap: 50px">
+    
+     <div>
 
     <div class="checkbox-wrapper-36">
-      Show Facilities
+      <span>Show Facilities</span>
       <input id="toggle-36" type="checkbox" name = "show_facilities_button">
       <label for="toggle-36"></label>
     </div>
 
-
   </div>
+
+
+  <div style="width: 200px; margin-top: 14px;">
+    <label for="inputNanme4" class="form-label">Business Sector</label>
+    <select class="form-select" name = "option_brngy_sec">
+      <option value ="" selected="">Open this select menu</option>
+      @foreach($biz_sec_List as $list)
+        <option value="{{$list->id}}">{{$list->name}}</option>
+      @endforeach
+    </select>
+  </div>
+
   <div class="dropdown" style="margin: 0px;margin-top: 15px; padding: 0px">
     <div class="select">
         <span class="selected">Barangays</span>
@@ -246,23 +259,10 @@ input[type=text], select {
     </ul>
   </div>
 
-
-  <div class="dropdowns_biz_sec" style="margin: 0px;margin-top: 15px; padding: 0px; margin-left: 250px;">
-    <div class="select">
-        <span class="selected">Business Sector</span>
-        <div class="caret"></div>
-    </div>
-    <ul class="menu">
-       <li id="option_brngy_sec" __id = "">
-          <p >All</p>
-        </li>
-       @foreach($biz_sec_List as $row)
-        <li id="option_brngy_sec" __id = "{{$row->id}}">
-            <p>{{$row->name}}</p>
-        </li>
-       @endforeach
-    </ul>
   </div>
+
+
+
   
 
 
@@ -4349,11 +4349,11 @@ function removeData(chart) {
 render_chart();
 
 let option_brngy = $('li#option_brngy');
-let option_brngy_sec = $('li#option_brngy_sec');
+let option_brngy_sec = $('select[name="option_brngy_sec"]');
 
 option_brngy.on('click', function(){
   let id = $(this).attr('__id');
-  let biz_sec = $('div.dropdowns_biz_sec .active').attr('__id')??null;
+  let biz_sec = option_brngy_sec.val()??null;
 
   render_marker(id, biz_sec);
   render_chart(id);
@@ -4364,10 +4364,10 @@ option_brngy.on('click', function(){
 
 
 option_brngy_sec.on('click', function(){
-  let id = $(this).attr('__id');
+  let id = $(this).val();
   let baranggay = $('div.dropdown .active').attr('__id')??null;
 
-
+  console.log(baranggay, id);
   render_marker(baranggay, id);
   render_chart(id);
   render_population(id);
