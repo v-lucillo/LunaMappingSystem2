@@ -10,9 +10,7 @@
 
   @include('view_only.layout.topbar')
 
-  <main id="main" class="main">
-    @yield('container')
-  </main><!-- End #main -->
+   @yield('container')
 
   
 

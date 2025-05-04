@@ -1,158 +1,385 @@
 @extends('administrator.layout.master')
 
 @section('css')
-
-  </style>
+<style type="text/css">
+  #map{
+    position: relative;
+    height: 500px;
+  }
+</style>
 @endsection
 
 
 @section('container')
-<div class="dropdown">
-  <div class="select">
-      <span class="selected">Barangays</span>
-      <div class="caret"></div>
+  <div class="row">
+    <div class="col-lg-5 col-sm-12">
+        <div class="card">
+          <div class="d-flex justify-content-between align-items-center" style="padding: 0px 20px;">
+              <h5 class="card-title" name = "card_title">Add Record</h5>
+              <i class="bx bxs-trash" name = "remove_edit_button" style="display: none;"></i>
+          </div>
+
+          <div class="card-body">
+            <form name = "barrangay_form">
+              
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Baranngay</label>
+                <div class="col-sm-9">
+                  <select class="form-select" name = "baranngay">
+                    <option selected="">Open this select menu</option>
+                    @foreach($barangay_list as $list)
+                      <option value="{{$list->id}}">{{$list->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+              <input hidden name="id">
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Address</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name ="address" placeholder="(e.g 123 Centro 1, Isabela)">
+                </div>
+              </div>
+
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Coordinates</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" name ="coordinates" readonly="readonly">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <div id="map" class="map"></div>
+                  <pre id="info"></pre>
+                </div>
+              </div>
+
+              
+
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Business Type</label>
+                <div class="col-sm-9">
+                  <select class="form-select" name = "business_type">
+                    <option selected="">Open this select menu</option>
+                    @foreach($business_list as $list)
+                      <option value="{{$list->id}}">{{$list->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Business Sector</label>
+                <div class="col-sm-9">
+                  <select class="form-select" name = "biz_sec">
+                    <option selected="">Open this select menu</option>
+                    @foreach($biz_sec_List as $list)
+                      <option value="{{$list->id}}">{{$list->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+
+
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-3 col-form-label">Remarks</label>
+                <div class="col-sm-9">
+                  <textarea name = "remarks" class="form-control" style="height: 100px"></textarea>
+                </div>
+              </div>
+            </form>
+
+
+            <div class="row mb-3">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary" name = "create_baranggay_record">Submit Form</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-7 col-sm-12">
+      <div class="card-datatable table-responsive">
+        <table class="table" name = "baranggay_record_table">
+            <thead>
+            <tr>
+                <th>Baranggay</th>
+                <th>Business Type</th>
+                <th>Business Sec</th>
+                <th>Address</th>
+                <th>Remarks</th>
+                <th>Coordinates</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+
+    <div class="col-6">
+      <div class="card">
+          <div class="card-body">
+            <canvas id="myChart"></canvas>
+          </div>
+      </div> 
+    </div>
+
+    
+    <div class="col-6">
+      <div class="card">
+          <div class="card-body">
+            <canvas id="biz_bar_chart"></canvas>
+          </div>
+      </div> 
+    </div>
+
+
+
+
+
   </div>
-  <ul class="menu">
-      <li id="option_brngy">
-        <p id="bustamante">Bustamante</p>
-      </li>
-      
-      <li id="option_brngy">
-         <p id="centro_1">Centro 1</p>
-      </li>
-      
-      <li id="option_brngy">
-          <p id="centro_2">Centro 2</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="centro_3">Centro 3</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="concepcion">Concepcion</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="dadap">Dadap</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="harana">Harana</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="lalog_1">Lalog 1</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="lalog_2">Lalog 2</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="luyao">Luyao</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="macanao">Macañao</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="macugay">Macugay</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="mambabanga">Mambabanga</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="pulay">Pulay</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="puroc">Puroc</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="san_isidro">San Isidro</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="san_miguel">San Miguel</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="santo_domingo">Santo Domingo</p>
-      </li>
-
-      <li id="option_brngy">
-          <p id="union_kalinga">Union Kalinga</p>
-      </li>
-  </ul>
-</div>
-
-
-<h1 class="mapa">Map</h1>
-<div id="map" class="map"></div>
-
-<pre id="coordinates" class="coordinates"></pre>
-
-
-
-<div class="graphBox">
-  <h1>Graph</h1>
-  <div class="box">
-      <canvas id="myChart"></canvas>
-  </div>
-
-  
-</div>
-
 
 @endsection
 
 
 @section('js')
-    
-<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 
 <script type="text/javascript">
 
-</script>
 
 
 
-
-{{--  Map Script --}}
-<script>
-	// TO MAKE THE MAP APPEAR YOU MUST
-	// ADD YOUR ACCESS TOKEN FROM
-	// https://account.mapbox.com
-	mapboxgl.accessToken = 'pk.eyJ1IjoidmljdG9yaW5vaSIsImEiOiJjbGtnbDgxbjYwMWxyM2VueTZzbzdjMG9xIn0.cDWO9uV_3oq2AlHuIWQzfw';
-    const coordinates = document.getElementById('coordinates');
-    const map = new mapboxgl.Map({
-        container: 'map',
-        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-        style: 'mapbox://styles/mapbox/satellite-v9',
-        center: [121.72827890300437, 16.973888694502364],
-        zoom: 12
-    });
-
-    const marker = new mapboxgl.Marker({
-        draggable: true
-    })
-        .setLngLat([121.72827890300437, 16.973888694502364])
-        .addTo(map);
-
-        // const el = document.createElement('div');
-        // el.className = 'marker';
-        // const marker = new mapboxgl.Marker(el).setLngLat([121.71871068604531, 16.939325096589386]).addTo(map);
-
-    function onDragEnd() {
-        const lngLat = marker.getLngLat();
-        coordinates.style.display = 'block';
-        // coordinates.innerHTML = `Longitude: ${lngLat.lng}<br />Latitude: ${lngLat.lat}`;
+const ctx = document.getElementById('myChart');
+const biz_bar_chart = document.getElementById('biz_bar_chart');
+  let new_chart_2 =  new Chart(biz_bar_chart, {
+  type: 'bar',
+  options: {
+    indexAxis: 'y',
+    // Elements options apply to all of the options unless overridden in a dataset
+    // In this case, we are setting the border of each horizontal bar to be 2px wide
+    elements: {
+      bar: {
+        borderWidth: 2,
+      }
     }
+  }
+});
+
+
+  let new_chart =  new Chart(ctx, {
+  type: 'bar',
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+  
+function render_chart(id = null){
+  $.ajax({
+    url: `/administrator/get_barangay_chart`,
+    data: {
+      id: id
+    },
+    success: function(e){
+      removeData(new_chart);
+      addData(new_chart, e.label, e.set, e.color);
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+
+
+function biz_chart(){
+  $.ajax({
+    url:`/administrator/get_total_biz_per_baranggay`,
+    success: function(e){
+      removeData(new_chart_2);
+      addData(new_chart_2, e.label, e.set, e.color);
+    },
+    error: function(e){
+      console.log(e);
+    }
+  });
+}
+biz_chart();
+  
+  
+
+
+function addData(chart, label, newData, color) {
+  chart.data = {
+    labels: label,
+    datasets: [{
+      label: '# business',
+      data: newData,
+      backgroundColor: color,
+      borderWidth: 1
+    }]
+  };
+  chart.update();
+}
+
+function removeData(chart) {
+    chart.data.labels = [];
+    chart.data.datasets = [];
+    chart.update();
+}
+
+render_chart();
+
+
+
+
+
+  const barrangay_form =  $('form[name="barrangay_form"]');
+  const remove_edit_button =  $('i[name="remove_edit_button"]');
+  const card_title =  $('h5[name="card_title"]');
+
+  const baranggay_record_table =  $('table[name="baranggay_record_table"]').DataTable({
+      ajax: `/administrator/get_baranggay_record`,
+      columns: [
+          {data: 'baranggay_name'},
+          {data: 'business_type_name'},
+          {data: 'biz_sec_name'},
+          {data: 'address'},
+          {data: 'remarks'},
+          {data: 'coordinates'},
+          {data: function(){
+            return `<button class="btn btn-danger" name="delete">Delete</button>`;
+          }}
+      ],
+  });
+
+
+/*delete*/
+  $(document).on('click', 'table[name="baranggay_record_table"] tbody tr button[name="delete"]', function(){
+    let data = baranggay_record_table.row($(this).parent()).data();
+    $.ajax({
+      url:`/administrator/delete_rec`,
+      data: {
+        id: data.id,
+        table_id: 1,
+      },
+      success: function(e){
+        baranggay_record_table.ajax.reload(null, false);
+        $(this).hide();
+        render_chart();
+        biz_chart();
+        card_title.text("Add Record");
+        barrangay_form.trigger('reset');
+        alert("Record Deleted");
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  });
+/* Delete*/
+
+
+
+  $(document).on('click', 'table[name="baranggay_record_table"] tbody tr', function(){
+    let data = baranggay_record_table.row(this).data();
+    remove_edit_button.show();
+    card_title.text("Modify Record");
+    for(let key in data){
+      barrangay_form.find(`input[name="${key}"]`).val(data[key]);
+    }
+    $('input[name="id"]').val(data.id);
+    $('select[name="business_type"]').val(data.business_type).change();
+    $('select[name="baranngay"]').val(data.baranngay).change();
+    $('select[name="biz_sec"]').val(data.biz_sec).change();
+    $('textarea[name="remarks"]').val(data.remarks);
+
+
+    let lat  =  data.coordinates.split("Lat: ")[1];
+    let long =  data.coordinates.split("Long: ")[1].split(" -")[0];
+    marker.setLngLat([long, lat]);
+
+  });
+
+
+  remove_edit_button.on('click', function(){
+    $(this).hide();
+    card_title.text("Add Record");
+    barrangay_form.trigger('reset');
+  });
+
+  $('button[name="create_baranggay_record"]').on('click', function(){
+    $.ajax({
+      url: `/administrator/create_baranggay_record`,
+      data: barrangay_form.serializeArray(),
+      success: function(e){
+        render_chart();
+        biz_chart();
+        Toastify({
+                  text: "Success",
+                  duration: 3000,
+                  destination: "https://github.com/apvarun/toastify-js",
+                  newWindow: true,
+                  close: true,
+                  gravity: "top", // `top` or `bottom`
+                  position: "center", // `left`, `center` or `right`
+                  stopOnFocus: true, // Prevents dismissing of toast on hover
+                  className: "info",
+                  onClick: function(){} // Callback after click
+                }).showToast();
+        barrangay_form.trigger('reset');
+        baranggay_record_table.ajax.reload(null, false);
+        remove_edit_button.hide();
+        card_title.text("Add Record");
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  });
+</script>
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoidmljdG9yaW5vaSIsImEiOiJjbGtnbDgxbjYwMWxyM2VueTZzbzdjMG9xIn0.cDWO9uV_3oq2AlHuIWQzfw';
+  // const coordinates = document.getElementById('coordinates');
+  const map = new mapboxgl.Map({
+      container: 'map',
+      // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+      style: 'mapbox://styles/mapbox/satellite-v9',
+      center: [121.72827890300437, 16.973888694502364],
+      zoom: 12
+  });
+
+  const marker = new mapboxgl.Marker({
+      draggable: true
+  })
+  .setLngLat([121.72827890300437, 16.973888694502364])
+  .addTo(map);
+
+
+  function onDragEnd() {
+      const lngLat = marker.getLngLat();
+      $('input[name="coordinates"]').val(`Long: ${lngLat.lng} - Lat: ${lngLat.lat}`);
+  }
     map.on('load', () => {
 // Add a data source containing GeoJSON data.
 map.addSource('maine', {
@@ -201,32 +428,6 @@ map.addSource('maine', {
 [121.72235743753828,  16.932287842286513],
 [121.71079204686492,  16.933706301878814],
 [121.70189618874934,  16.92872467254338],
-// [121.69992288114645,  16.9147249062585],
-// [121.91937755493524,  16.870419938231933],
-// [121.90287823488387,  16.856808027629683],
-// [121.89985591755163,  16.85352507735179],
-// [121.89985591755163,  16.83756155451779],
-// [121.8970760445199,  16.82026621907606],
-// // [121.90819553664693,  16.811617959363645],
-// [121.90174035074244,  16.813243332097016],
-// [121.90819553664693,  16.789662913721045],
-// [121.95962318773456,  16.8062957573311],
-// [121.97074267986301,  16.82026621907606],
-// [121.97699739418448,  16.797646860563873],
-// // [122.00827096579184,  16.814944259786174],
-// [121.99728274224128,  16.819536437442437],
-// [121.99842335523101,  16.85652488024111],
-// [121.99147367265158,  16.90440660012345],
-// [121.98313405355628,  16.93166714875619],
-// [121.98660889484597,  16.980194447246006],
-// [121.98104914878246,  17.01143141275682],
-// [121.98104914878246,  17.022064085203965],
-// [121.98029211632411,  17.02569286613121],
-// [121.9765749723341,  17.031419045635445],
-// [121.96852116035711,  17.038132274222605],
-// [121.96067385638065,  17.03951437960015],
-// [121.9299041644689,  17.03892204997544],
-
 
 
 ]
@@ -260,7 +461,7 @@ map.addLayer({
 });
 
 
-    marker.on('dragend', onDragEnd);
+  marker.on('dragend', onDragEnd);
 </script>
 
 

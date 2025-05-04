@@ -7,7 +7,7 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
-
+<link href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css" rel="stylesheet">
     <style>
 
     /* #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -26,9 +26,17 @@
 
     } */
     
+    header{
+            display: flex
+;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px, 10%;
+    background-color: #181918b4;
+    }
      #map{
         position: relative;
-        width: 900px; 
+        width: 1200px; 
         height: 560px;
         margin-left: 250px;
         margin-top: 60px;
